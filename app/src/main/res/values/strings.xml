@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Dracarys</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="login">Login</string>
+    <string name="action_settings">Settings</string>
+    <string name="search">Search</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+
+</resources>
