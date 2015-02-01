@@ -35,7 +35,7 @@ public class DrawerLineItemAdapter extends RecyclerView.Adapter<DrawerLineItemVi
     public void onBindViewHolder(DrawerLineItemViewHolder holder, int position) {
         DrawerLineItem current = data.get(position);
         holder.title.setText(current.getTitle());
-//        holder.icon.setImageResource(current.getIconId());
+        holder.icon.setImageResource(current.getIconId());
     }
 
     @Override

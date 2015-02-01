@@ -1,5 +1,6 @@
 package com.yahoo.dracarys.data;
 
+import com.yahoo.dracarys.R;
 import com.yahoo.dracarys.models.DrawerLineItem;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ public class DrawerData {
             data = new ArrayList();
             for (int i = 0; i < 20; i++) {
                 DrawerLineItem lineItem = new DrawerLineItem();
-                lineItem.setIconId(i);
+                lineItem.setIconId(R.drawable.ic_launcher);
                 lineItem.setTitle("Hello World " + i);
                 data.add(lineItem);
             }
