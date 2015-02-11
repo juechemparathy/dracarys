@@ -11,8 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yahoo.dracarys.R;
+import com.yahoo.dracarys.activities.AddActivity;
 import com.yahoo.dracarys.activities.SearchActivity;
-import com.yahoo.dracarys.activities.ProfileActivity;
 import com.yahoo.dracarys.models.DrawerLineItem;
 
 import java.util.List;
@@ -73,7 +73,7 @@ public class DrawerLineItemAdapter extends RecyclerView.Adapter<DrawerLineItemAd
             if (position == 0) {
                 context.startActivity(new Intent(context, SearchActivity.class));
             }if (position == 1) {
-                context.startActivity(new Intent(context, ProfileActivity.class));
+                context.startActivity(new Intent(context, AddActivity.class));
             } else {
                 Toast.makeText(context, "Clicked on position " + position, Toast.LENGTH_SHORT).show();
             }

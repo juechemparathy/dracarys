@@ -1,33 +1,45 @@
 package com.yahoo.dracarys.activities;
 
-import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.yahoo.dracarys.R;
 
-public class ProfileActivity extends ActionBarActivity {
-    private Toolbar toolbar;
+public class StartupActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.activity_startup);
 
-        toolbar =  (Toolbar)findViewById(R.id.app_bar);
-        setSupportActionBar(toolbar);
+        //check for upgrade stage
+        checkForUpgrade();
+        //check for UserPref init page
+        checkForUserPrefSettings();
 
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Intent i = new Intent(this,MainActivity.class);
+        i.putExtra("startUpMode","normal");
+        Log.d("DEBUG","Starting up in mormal mode");
+        startActivity(i);
     }
 
+
+    private void checkForUpgrade(){
+
+    }
+
+    private void checkForUserPrefSettings(){
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_profile, menu);
+        getMenuInflater().inflate(R.menu.menu_startup, menu);
         return true;
     }
 

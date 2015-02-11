@@ -4,15 +4,15 @@
     tools:context=".MainActivity">
 
     <item
-        android:id="@+id/action_settings"
-        app:showAsAction="never"
-        android:orderInCategory="100"
-        android:title="@string/action_settings" />
-
+        android:id="@+id/search"
+        android:icon="@drawable/book_search"
+        app:showAsAction="always"
+        android:orderInCategory="200"
+        android:title="@string/search" />
 
     <item
-        android:id="@+id/search"
-        android:icon="@drawable/ic_launcher"
+        android:id="@+id/add"
+        android:icon="@drawable/book_text_add"
         app:showAsAction="always"
         android:orderInCategory="200"
         android:title="@string/search" />

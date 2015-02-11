@@ -16,7 +16,7 @@ import com.yahoo.dracarys.fragments.NavigationDrawerFragment;
 import com.yahoo.dracarys.fragments.TimelineFragment;
 import com.yahoo.dracarys.helpers.SlidingTabLayout;
 
-
+//icons  - https://www.iconfinder.com/search/?q=book&style=glyph&price=free
 public class MainActivity extends ActionBarActivity implements TimelineFragment.OnFragmentInteractionListener {
 
     private Toolbar toolbar;
@@ -37,10 +37,18 @@ public class MainActivity extends ActionBarActivity implements TimelineFragment.
 
         viewPager= (ViewPager)findViewById(R.id.pager);
 
-        viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
+        viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(),this));
         mTabs = (SlidingTabLayout) findViewById(R.id.tabs);
+        mTabs.setDistributeEvenly(true);
+        mTabs.setCustomTabView(R.layout.main_tab_view, R.id.tabText);
+        mTabs.setBackgroundColor(getResources().getColor(R.color.primary_light));
+        mTabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
+            @Override
+            public int getIndicatorColor(int position) {
+                return getResources().getColor(R.color.accent);
+            }
+        });
         mTabs.setViewPager(viewPager);
-
     }
 
     @Override
@@ -57,13 +65,12 @@ public class MainActivity extends ActionBarActivity implements TimelineFragment.
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
         if (id == R.id.search) {
             startActivity(new Intent(this, SearchActivity.class));
+        }
+
+        if (id == R.id.add) {
+            startActivity(new Intent(this, AddActivity.class));
         }
 
         return super.onOptionsItemSelected(item);
