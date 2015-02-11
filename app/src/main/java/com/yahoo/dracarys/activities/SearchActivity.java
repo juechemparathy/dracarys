@@ -8,14 +8,14 @@ import android.view.MenuItem;
 
 import com.yahoo.dracarys.R;
 
-public class LoginActivity extends ActionBarActivity {
+public class SearchActivity extends ActionBarActivity {
 
     private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_search);
 
         toolbar =  (Toolbar)findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);

@@ -17,8 +17,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.LoginActivity"
-            android:label="@string/title_activity_login"
+            android:name=".activities.SearchActivity"
+            android:label="@string/title_activity_search"
             android:parentActivityName=".activities.MainActivity" >
         </activity>
         <activity
