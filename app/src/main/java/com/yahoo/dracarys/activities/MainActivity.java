@@ -34,9 +34,7 @@ public class MainActivity extends ActionBarActivity implements TimelineFragment.
         NavigationDrawerFragment navigatorFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_fragment);
         navigatorFragment.setUp(R.id.navigation_fragment, (DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
 
-
         viewPager= (ViewPager)findViewById(R.id.pager);
-
         viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(),this));
         mTabs = (SlidingTabLayout) findViewById(R.id.tabs);
         mTabs.setDistributeEvenly(true);

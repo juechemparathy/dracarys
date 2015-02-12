@@ -8,8 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.yahoo.dracarys.R;
+import com.yahoo.dracarys.helpers.AmazonFetcher;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,12 +28,10 @@ import com.yahoo.dracarys.R;
  * create an instance of this fragment.
  */
 public class TimelineFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String POSITION = "position";
 
     // TODO: Rename and change types of parameters
-    private int mParam1;
+    private int position;
     private TextView tvPagePosition;
     private OnFragmentInteractionListener mListener;
 
@@ -35,7 +41,6 @@ public class TimelineFragment extends Fragment {
      *
      * @return A new instance of fragment TimelineFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static TimelineFragment newInstance(int position) {
         TimelineFragment fragment = new TimelineFragment();
         Bundle args = new Bundle();
@@ -52,7 +57,7 @@ public class TimelineFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getInt(POSITION);
+            position = getArguments().getInt(POSITION);
         }
     }
 
@@ -64,8 +69,26 @@ public class TimelineFragment extends Fragment {
         tvPagePosition = (TextView)layout.findViewById(R.id.position);
         Bundle bundle = getArguments();
         if(bundle!=null) {
-            tvPagePosition.setText("Page " +bundle.getInt("position"));
+//            tvPagePosition.setText("Page " +bundle.getInt("position"));
         }
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        requestQueue.start();
+        String url="http://theagiledirector.com/getRest_v3.php?isbn=9781783983285";
+
+        StringRequest stringRequest =new StringRequest(Request.Method.GET,url,new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                tvPagePosition.setText(AmazonFetcher.parseXMLInput(response).toString());
+            }
+        },new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getActivity(),error.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+        });
+        requestQueue.add(stringRequest);
+
         return layout;
     }
 
