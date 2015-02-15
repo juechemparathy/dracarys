@@ -13,10 +13,7 @@ import android.widget.Toast;
 
 import com.yahoo.dracarys.R;
 
-import me.dm7.barcodescanner.zxing.ZXingScannerView;
-
 public class AddActivity extends ActionBarActivity{
-    private ZXingScannerView mScannerView;
     private Toolbar toolbar;
     private final int REQUEST_CODE = 20;
     EditText etProductCode;
