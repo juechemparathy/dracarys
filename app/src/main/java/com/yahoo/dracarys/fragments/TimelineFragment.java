@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +20,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.yahoo.dracarys.R;
+import com.yahoo.dracarys.adapters.LineItemAdapter;
 import com.yahoo.dracarys.helpers.AmazonFetcher;
+import com.yahoo.dracarys.models.BookLineItem;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,6 +43,11 @@ public class TimelineFragment extends Fragment {
     private int position;
     private TextView tvPagePosition;
     private OnFragmentInteractionListener mListener;
+    private RecyclerView recyclerView;
+    private LineItemAdapter lineItemAdapter;
+    private Map<String, String> timelineResult;
+    List<BookLineItem> bookLineItems = new ArrayList<BookLineItem>();
+
 
     /**
      * Use this factory method to create a new instance of
@@ -66,28 +80,49 @@ public class TimelineFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View layout = inflater.inflate(R.layout.fragment_timeline, container, false);
-        tvPagePosition = (TextView)layout.findViewById(R.id.position);
         Bundle bundle = getArguments();
-        if(bundle!=null) {
+        if (bundle != null) {
 //            tvPagePosition.setText("Page " +bundle.getInt("position"));
         }
 
-        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        requestQueue.start();
-        String url="http://theagiledirector.com/getRest_v3.php?isbn=9781783983285";
 
-        StringRequest stringRequest =new StringRequest(Request.Method.GET,url,new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                tvPagePosition.setText(AmazonFetcher.parseXMLInput(response).toString());
+        if(timelineResult==null) {
+            RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+            String url = "http://theagiledirector.com/getRest_v3.php?isbn=9780133930153";
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Log.d("DEBUG", "Calling AmazonFetcher");
+                    timelineResult = AmazonFetcher.parseXMLInput(response);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+            requestQueue.add(stringRequest);
+
+        }
+
+
+        if (timelineResult != null && timelineResult.size() > 0) {
+            for (int i = 0; i < 20; i++) {
+                BookLineItem bookLineItem = new BookLineItem();
+                bookLineItem.setAuthor(timelineResult.get("author"));
+                bookLineItem.setImageUrl(timelineResult.get("smallImageUrl"));
+                bookLineItem.setTitle(timelineResult.get("title"));
+                bookLineItem.setUsername("Jue Chemparathy");
+                bookLineItem.setAge("3h");
+                bookLineItems.add(bookLineItem);
             }
-        },new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getActivity(),error.getMessage(),Toast.LENGTH_SHORT).show();
-            }
-        });
-        requestQueue.add(stringRequest);
+        }
+
+
+        recyclerView = (RecyclerView) layout.findViewById(R.id.timeline_rcview);
+        lineItemAdapter = new LineItemAdapter(getActivity(), bookLineItems);
+        recyclerView.setAdapter(lineItemAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         return layout;
     }

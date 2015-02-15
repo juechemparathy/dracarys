@@ -2,7 +2,8 @@
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-tools:context="com.yahoo.dracarys.activities.AddActivity">
+tools:context="com.yahoo.dracarys.activities.AddActivity"
+    android:background="@android:color/white">
 
 <include
     android:id="@+id/app_bar"
@@ -12,13 +13,32 @@ tools:context="com.yahoo.dracarys.activities.AddActivity">
     android:id="@+id/login_general_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_below="@+id/app_bar">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/add"
+    android:layout_below="@+id/app_bar"
+    android:orientation="vertical"
+    android:weightSum="1">
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/et_add_isbn"
         />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Lookup ISBN"
+        android:id="@+id/btAddIsbn"
+        android:onClick="onManualRequest"/>
+
+    <ImageButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/iv_add_isbn_scan"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/book_image_scanner"
+        android:onClick="onScannerRequest"
+        />
+
 </LinearLayout>
 
 </RelativeLayout>

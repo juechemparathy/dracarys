@@ -66,7 +66,6 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View layout = inflater.inflate(R.layout.fragment_profile, container, false);
-        tvPagePosition = (TextView)layout.findViewById(R.id.position);
         Bundle bundle = getArguments();
         if(bundle!=null) {
 //            tvPagePosition.setText("Page " +bundle.getInt("position"));

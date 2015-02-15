@@ -57,7 +57,6 @@ public class NavigationDrawerFragment extends Fragment {
         recyclerView = (RecyclerView)layout.findViewById(R.id.drawer_rcview);
         drawerLineItemAdapter = new DrawerLineItemAdapter(getActivity(), DrawerData.getDrawerItems());
         recyclerView.setAdapter(drawerLineItemAdapter);
-
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         return layout;
 

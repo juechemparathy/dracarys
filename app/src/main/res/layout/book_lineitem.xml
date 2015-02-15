@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:orientation="vertical" android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:weightSum="1"
+android:background="@android:color/white"
+android:layout_marginBottom="1dp">
+
+<ImageView
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:id="@+id/iv_drawer"
+    android:src="@drawable/book_single"
+    android:layout_alignParentLeft="true"
+    android:layout_centerHorizontal="true"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentBottom="true" />
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/tv_author"
+    android:layout_toRightOf="@id/iv_drawer"
+    android:textColor="@android:color/darker_gray"
+    android:textSize="10sp"
+    />
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentRight="true"
+    android:id="@+id/tv_age"
+    android:layout_toLeftOf="@id/tv_author"
+    android:textColor="@android:color/darker_gray"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    android:textSize="10sp"
+    />
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/tv_title"
+    android:layout_alignLeft="@id/tv_author"
+    android:layout_below="@id/tv_author"
+    android:textColor="@android:color/black"
+    android:textSize="12sp"
+    />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignBottom="@+id/tv_username"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/tv_title"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:padding="10dp"
+        >
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:id="@+id/iv_star"
+        android:src="@drawable/book_star_empty"
+        android:layout_marginBottom="106dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/tv_age"
+        android:layout_toStartOf="@+id/tv_age" />
+
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:id="@+id/iv_addtomine"
+        android:src="@drawable/book_text_add"
+        android:layout_marginBottom="106dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/iv_star"
+        android:layout_toStartOf="@+id/iv_star" />
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:id="@+id/iv_requestLoan"
+        android:src="@drawable/book_text_settings"
+        android:layout_marginBottom="106dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/iv_addtomine"
+        android:layout_toStartOf="@+id/iv_addtomine" />
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:id="@+id/iv_follow"
+            android:src="@drawable/book_profile"
+            android:layout_marginBottom="106dp"
+            android:layout_alignParentBottom="true"
+            android:layout_toLeftOf="@+id/iv_requestLoan"
+            android:layout_toStartOf="@+id/iv_requestLoan" />
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_username"
+        android:layout_alignParentLeft="true"
+        android:textColor="@android:color/black"
+        android:textSize="10sp"
+        android:paddingLeft="5dp"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:layout_below="@+id/iv_drawer"
+        android:layout_alignRight="@+id/iv_drawer"
+        android:layout_alignEnd="@+id/iv_drawer" />
+
+</RelativeLayout>

@@ -4,9 +4,10 @@
     android:layout_height="match_parent"
     tools:context="com.yahoo.dracarys.fragments.TimelineFragment">
 
-    <TextView
-        android:id="@+id/position"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/timeline_rcview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:layout_height="wrap_content"
+        android:background="@color/background_floating_material_light">
+    </android.support.v7.widget.RecyclerView>
 </FrameLayout>
