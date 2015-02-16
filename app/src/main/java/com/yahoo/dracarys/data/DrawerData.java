@@ -46,6 +46,11 @@ public class DrawerData {
             lineItem.setTitle("Scan ISBN");
             data.add(lineItem);
 
+            lineItem = new DrawerLineItem();
+            lineItem.setIconId(R.drawable.book_profile);
+            lineItem.setTitle("Logout");
+            data.add(lineItem);
+
         }
         return data;
     }

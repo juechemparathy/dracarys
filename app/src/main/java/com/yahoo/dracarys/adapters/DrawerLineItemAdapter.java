@@ -10,8 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.ParseUser;
 import com.yahoo.dracarys.R;
 import com.yahoo.dracarys.activities.AddActivity;
+import com.yahoo.dracarys.activities.LoginActivity;
 import com.yahoo.dracarys.activities.SearchActivity;
 import com.yahoo.dracarys.models.DrawerLineItem;
 
@@ -74,7 +76,14 @@ public class DrawerLineItemAdapter extends RecyclerView.Adapter<DrawerLineItemAd
                 context.startActivity(new Intent(context, SearchActivity.class));
             }if (position == 1) {
                 context.startActivity(new Intent(context, AddActivity.class));
-            } else {
+            }if(position ==6){
+                ParseUser.logOut();
+                Intent i = new Intent(context, LoginActivity.class);
+                 //Was trying to remove the call stack on logout.- Ended up back button with ablack screen.
+//                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                context.startActivity(i);
+            }
+            else {
                 Toast.makeText(context, "Clicked on position " + position, Toast.LENGTH_SHORT).show();
             }
         }
