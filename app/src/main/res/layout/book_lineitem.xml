@@ -7,16 +7,12 @@ android:background="@android:color/white"
 android:layout_marginBottom="1dp">
 
 <ImageView
-    android:layout_width="100dp"
-    android:layout_height="100dp"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp"
+    android:layout_width="60dp"
+    android:layout_height="60dp"
     android:id="@+id/iv_drawer"
     android:src="@drawable/book_single"
-    android:layout_alignParentLeft="true"
-    android:layout_centerHorizontal="true"
-    android:layout_alignParentTop="true"
-    android:layout_alignParentBottom="true" />
+    android:layout_centerVertical="true"
+ />
 
 <TextView
     android:layout_width="wrap_content"

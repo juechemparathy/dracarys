@@ -10,16 +10,20 @@ import android.text.Spanned;
 import android.text.style.ImageSpan;
 
 import com.yahoo.dracarys.R;
+import com.yahoo.dracarys.fragments.NotificationFragment;
+import com.yahoo.dracarys.fragments.ProfileFragment;
 import com.yahoo.dracarys.fragments.TimelineFragment;
 
 /**
  * Created by jue on 2/11/15.
+ * FragmentStatePagerAdapter vs FragmentPagerAdapter
  */
 public class MainPagerAdapter extends FragmentPagerAdapter {
 
+
     Context context;
 
-    String[] tabTitles = {"Timeline", "Notifications", "Me"};
+    String[] tabTitles = {"Timeline", "Notifications", "MyProfile"};
     int icons[] = {R.drawable.book_stack, R.drawable.book_bookmark, R.drawable.book_profile};
 
     public MainPagerAdapter(FragmentManager fm,Context c) {
@@ -29,8 +33,15 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        TimelineFragment timelineFragment = TimelineFragment.newInstance(position);
-        return timelineFragment;
+        if(position==0) {
+            TimelineFragment timelineFragment = TimelineFragment.newInstance(position);
+            return timelineFragment;
+        }else if(position == 1){
+            NotificationFragment notificationFragment = new NotificationFragment();
+            return notificationFragment;
+        }else{
+            return new ProfileFragment();
+        }
     }
 
     @Override

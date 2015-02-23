@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,19 +12,33 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
 import com.yahoo.dracarys.R;
+import com.yahoo.dracarys.helpers.AmazonFetcher;
+import com.yahoo.dracarys.helpers.VolleySingleton;
+
+import java.util.Map;
 
 public class AddActivity extends ActionBarActivity{
     private Toolbar toolbar;
     private final int REQUEST_CODE = 20;
     EditText etProductCode;
     ImageView ivScannner;
+    Map<String,String> productResult;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
+        productResult=null;
 
         toolbar =  (Toolbar)findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
@@ -53,8 +68,39 @@ public class AddActivity extends ActionBarActivity{
             // Toast the name to display temporarily on screen
             Toast.makeText(this,"Scanner: "+ code, Toast.LENGTH_SHORT).show();
             //Get the ISBN result
-            //Add to the locker
-            //Move to Add Activity for more..
+
+            //Fetch ean details
+            RequestQueue requestQueue = VolleySingleton.getInstance().getRequestQueue();
+            String url = "http://theagiledirector.com/getRest_v3.php?isbn="+code;
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Log.d("DEBUG", "Calling AmazonFetcher");
+                    productResult = AmazonFetcher.parseXMLInput(response);
+                    String userObjId = ParseUser.getCurrentUser().getObjectId();
+                    ParseObject lockerItem = new ParseObject("Locker");
+                    lockerItem.put("userObjId", userObjId);
+                    lockerItem.put("title", productResult.get("title"));
+                    lockerItem.put("ean", productResult.get("ean"));
+                    lockerItem.put("smallimageurl", productResult.get("smallimageurl"));
+                    lockerItem.put("author", productResult.get("author"));
+
+
+                    //Set the default flags
+
+                    //Honor the user preferences
+
+                    //Add to the locker
+                    lockerItem.saveInBackground();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("DEBUG",error.getMessage());
+                    error.printStackTrace();
+                }
+            });
+            requestQueue.add(stringRequest);
         }
     }
 

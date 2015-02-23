@@ -13,11 +13,11 @@ import android.view.MenuItem;
 import com.yahoo.dracarys.R;
 import com.yahoo.dracarys.adapters.MainPagerAdapter;
 import com.yahoo.dracarys.fragments.NavigationDrawerFragment;
-import com.yahoo.dracarys.fragments.TimelineFragment;
 import com.yahoo.dracarys.helpers.SlidingTabLayout;
+import com.yahoo.dracarys.interfaces.OnFragmentInteractionListener;
 
 //icons  - https://www.iconfinder.com/search/?q=book&style=glyph&price=free
-public class MainActivity extends ActionBarActivity implements TimelineFragment.OnFragmentInteractionListener {
+public class MainActivity extends ActionBarActivity implements OnFragmentInteractionListener {
 
     private Toolbar toolbar;
     ViewPager viewPager;

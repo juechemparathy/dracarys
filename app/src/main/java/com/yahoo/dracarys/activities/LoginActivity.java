@@ -56,7 +56,8 @@ public class LoginActivity extends ActionBarActivity {
                         // Hooray! The user is logged in.
                         callMainActivity();
                     } else {
-                        errorMessage = "Invalid username/password";
+                        errorMessage = e.getMessage();
+                        Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
                         // Signup failed. Look at the ParseException to see what happened.
                     }
                 }
@@ -77,11 +78,11 @@ public class LoginActivity extends ActionBarActivity {
                 public void done(ParseException e) {
                     if (e == null) {
 
-                        isUserLoggedIn = true;
-
+                        callMainActivity();
                         // Hooray! Let them use the app now.
                     } else {
                         errorMessage = e.getMessage();
+                        Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
                         // Sign up didn't succeed. Look at the ParseException
                         // to figure out what went wrong
                     }
@@ -89,13 +90,6 @@ public class LoginActivity extends ActionBarActivity {
             });
         }
 
-        if (isUserLoggedIn) {
-            callMainActivity();
-        }
-
-        if (errorMessage != null) {
-            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
-        }
     }
 
     private void callMainActivity() {

@@ -10,9 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.yahoo.dracarys.R;
 import com.yahoo.dracarys.activities.AddActivity;
 import com.yahoo.dracarys.activities.SearchActivity;
+import com.yahoo.dracarys.helpers.VolleySingleton;
 import com.yahoo.dracarys.models.BookLineItem;
 
 import java.util.List;
@@ -26,11 +29,20 @@ public class LineItemAdapter extends RecyclerView.Adapter<LineItemAdapter.LineIt
     private LayoutInflater layoutInflater;
     private List<BookLineItem> data;
     private Context context;
+    VolleySingleton volleySingleton;
+    ImageLoader imageLoader;
 
     public LineItemAdapter(Context context, List<BookLineItem> data) {
         this.context = context;
         this.layoutInflater = LayoutInflater.from(context);
         this.data = data;
+        volleySingleton = VolleySingleton.getInstance();
+        imageLoader = volleySingleton.getImageLoader();
+    }
+
+    public void setBookLineItemList(List<BookLineItem> data){
+        this.data=data;
+        notifyItemRangeChanged(0,data.size());
     }
 
     @Override
@@ -41,7 +53,7 @@ public class LineItemAdapter extends RecyclerView.Adapter<LineItemAdapter.LineIt
     }
 
     @Override
-    public void onBindViewHolder(LineItemViewHolder holder, int position) {
+    public void onBindViewHolder(final LineItemViewHolder holder, int position) {
         BookLineItem current = data.get(position);
         holder.title.setText(current.getTitle());
         holder.icon.setImageResource(current.getIconId());
@@ -49,6 +61,19 @@ public class LineItemAdapter extends RecyclerView.Adapter<LineItemAdapter.LineIt
         holder.author.setText(current.getAuthor());
         holder.age.setText(current.getAge());
         holder.star.setImageResource(current.getStar());
+        if(current.getImageUrl()!=null){
+            imageLoader.get(current.getImageUrl(),new ImageLoader.ImageListener() {
+                @Override
+                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                    holder.icon.setImageBitmap(response.getBitmap());
+                }
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //fall back to default image
+                }
+            });
+        }
     }
 
     @Override

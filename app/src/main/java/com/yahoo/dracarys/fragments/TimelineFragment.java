@@ -11,32 +11,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.yahoo.dracarys.R;
 import com.yahoo.dracarys.adapters.LineItemAdapter;
-import com.yahoo.dracarys.helpers.AmazonFetcher;
+import com.yahoo.dracarys.interfaces.OnFragmentInteractionListener;
 import com.yahoo.dracarys.models.BookLineItem;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link TimelineFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link TimelineFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class TimelineFragment extends Fragment {
+
+public class TimelineFragment extends Fragment implements OnFragmentInteractionListener {
     private static final String POSITION = "position";
 
     // TODO: Rename and change types of parameters
@@ -45,8 +35,7 @@ public class TimelineFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private RecyclerView recyclerView;
     private LineItemAdapter lineItemAdapter;
-    private Map<String, String> timelineResult;
-    List<BookLineItem> bookLineItems = new ArrayList<BookLineItem>();
+    List<BookLineItem> bookLineItems;
 
 
     /**
@@ -85,45 +74,37 @@ public class TimelineFragment extends Fragment {
 //            tvPagePosition.setText("Page " +bundle.getInt("position"));
         }
 
-
-        if(timelineResult==null) {
-            RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-            String url = "http://theagiledirector.com/getRest_v3.php?isbn=9780133930153";
-            StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    Log.d("DEBUG", "Calling AmazonFetcher");
-                    timelineResult = AmazonFetcher.parseXMLInput(response);
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+        if(bookLineItems==null) {
+            bookLineItems = new ArrayList<BookLineItem>();
+            final ParseUser user = ParseUser.getCurrentUser();
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("Locker");
+            query.whereEqualTo("userObjId", user.getObjectId());
+            query.findInBackground(new FindCallback<ParseObject>() {
+                public void done(List<ParseObject> lockerList, ParseException e) {
+                    if (e == null) {
+                        Log.d("LOCKER", "Retrieved " + lockerList.size() + " items");
+                        for (ParseObject parseObject : lockerList) {
+                            BookLineItem bookLineItem = new BookLineItem();
+                            bookLineItem.setAuthor(parseObject.getString("author"));
+                            bookLineItem.setImageUrl(parseObject.getString("smallimageurl"));
+                            bookLineItem.setTitle(parseObject.getString("title"));
+                            bookLineItem.setUsername(parseObject.getString(user.getUsername()));
+                            bookLineItem.setAge(parseObject.getString("createdAt"));
+                            bookLineItems.add(bookLineItem);
+                        }
+                    } else {
+                        Log.d("LOCKER", "Error: " + e.getMessage());
+                    }
                 }
             });
-            requestQueue.add(stringRequest);
-
         }
-
-
-        if (timelineResult != null && timelineResult.size() > 0) {
-            for (int i = 0; i < 20; i++) {
-                BookLineItem bookLineItem = new BookLineItem();
-                bookLineItem.setAuthor(timelineResult.get("author"));
-                bookLineItem.setImageUrl(timelineResult.get("smallImageUrl"));
-                bookLineItem.setTitle(timelineResult.get("title"));
-                bookLineItem.setUsername("Jue Chemparathy");
-                bookLineItem.setAge("3h");
-                bookLineItems.add(bookLineItem);
-            }
-        }
-
 
         recyclerView = (RecyclerView) layout.findViewById(R.id.timeline_rcview);
         lineItemAdapter = new LineItemAdapter(getActivity(), bookLineItems);
         recyclerView.setAdapter(lineItemAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        lineItemAdapter.notifyDataSetChanged();
         return layout;
     }
 
@@ -151,19 +132,9 @@ public class TimelineFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 
 }
