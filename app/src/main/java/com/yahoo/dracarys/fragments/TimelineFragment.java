@@ -23,6 +23,7 @@ import com.yahoo.dracarys.interfaces.OnFragmentInteractionListener;
 import com.yahoo.dracarys.models.BookLineItem;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -78,7 +79,9 @@ public class TimelineFragment extends Fragment implements OnFragmentInteractionL
             bookLineItems = new ArrayList<BookLineItem>();
             final ParseUser user = ParseUser.getCurrentUser();
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Locker");
-            query.whereEqualTo("userObjId", user.getObjectId());
+            query.orderByDescending("updatedAt");
+            query.setLimit(100);
+            query.include("userPointer");
             query.findInBackground(new FindCallback<ParseObject>() {
                 public void done(List<ParseObject> lockerList, ParseException e) {
                     if (e == null) {
@@ -88,9 +91,11 @@ public class TimelineFragment extends Fragment implements OnFragmentInteractionL
                             bookLineItem.setAuthor(parseObject.getString("author"));
                             bookLineItem.setImageUrl(parseObject.getString("smallimageurl"));
                             bookLineItem.setTitle(parseObject.getString("title"));
-                            bookLineItem.setUsername(parseObject.getString(user.getUsername()));
-                            bookLineItem.setAge(parseObject.getString("createdAt"));
+                            bookLineItem.setUsername(parseObject.getParseUser("userPointer").getUsername());
+                            Date date =  parseObject.getCreatedAt();
+                            bookLineItem.setAge(getAge(date));
                             bookLineItems.add(bookLineItem);
+                            lineItemAdapter.notifyDataSetChanged();
                         }
                     } else {
                         Log.d("LOCKER", "Error: " + e.getMessage());
@@ -106,6 +111,41 @@ public class TimelineFragment extends Fragment implements OnFragmentInteractionL
 
         lineItemAdapter.notifyDataSetChanged();
         return layout;
+    }
+
+    public String getAge(Date date) {
+        //add logic for converting to expected format
+        try {
+            Date now = new Date();
+
+            long diff = now.getTime() - date.getTime();
+
+            long diffSeconds = diff / 1000 % 60;
+            long diffMinutes = diff / (60 * 1000) % 60;
+            long diffHours = diff / (60 * 60 * 1000) % 24;
+            long diffDays = diff / (24 * 60 * 60 * 1000);
+
+            System.out.print(diffDays + " days, ");
+            System.out.print(diffHours + " hours, ");
+            System.out.print(diffMinutes + " minutes, ");
+            System.out.print(diffSeconds + " seconds.");
+            if(diffDays >0){
+                return Long.toString(diffDays) + "d";
+            }
+            if(diffHours >0 ){
+                return Long.toString(diffHours)+ "h";
+            }
+            if(diffMinutes>0){
+                return Long.toString(diffMinutes)+ "m";
+            }
+            if(diffSeconds>0){
+                return Long.toString(diffMinutes)+ "s";
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     // TODO: Rename method, update argument and hook method into UI event

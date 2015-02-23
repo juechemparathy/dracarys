@@ -68,47 +68,53 @@ public class AddActivity extends ActionBarActivity{
             // Toast the name to display temporarily on screen
             Toast.makeText(this,"Scanner: "+ code, Toast.LENGTH_SHORT).show();
             //Get the ISBN result
-
-            //Fetch ean details
-            RequestQueue requestQueue = VolleySingleton.getInstance().getRequestQueue();
-            String url = "http://theagiledirector.com/getRest_v3.php?isbn="+code;
-            StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    Log.d("DEBUG", "Calling AmazonFetcher");
-                    productResult = AmazonFetcher.parseXMLInput(response);
-                    String userObjId = ParseUser.getCurrentUser().getObjectId();
-                    ParseObject lockerItem = new ParseObject("Locker");
-                    lockerItem.put("userObjId", userObjId);
-                    lockerItem.put("title", productResult.get("title"));
-                    lockerItem.put("ean", productResult.get("ean"));
-                    lockerItem.put("smallimageurl", productResult.get("smallimageurl"));
-                    lockerItem.put("author", productResult.get("author"));
-
-
-                    //Set the default flags
-
-                    //Honor the user preferences
-
-                    //Add to the locker
-                    lockerItem.saveInBackground();
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.d("DEBUG",error.getMessage());
-                    error.printStackTrace();
-                }
-            });
-            requestQueue.add(stringRequest);
+            createLockerItem(code);
         }
     }
 
+    private void createLockerItem(String code){
+        if(code == null  ||  code.length()==0){
+            return;
+        }
+        //Fetch ean details
+        RequestQueue requestQueue = VolleySingleton.getInstance().getRequestQueue();
+        String url = "http://theagiledirector.com/getRest_v3.php?isbn="+code;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("DEBUG", "Calling AmazonFetcher");
+                productResult = AmazonFetcher.parseXMLInput(response);
+                String userObjId = ParseUser.getCurrentUser().getObjectId();
+                ParseObject lockerItem = new ParseObject("Locker");
+                lockerItem.put("userObjId", userObjId);
+                lockerItem.put("title", productResult.get("title"));
+                lockerItem.put("ean", productResult.get("ean"));
+                lockerItem.put("smallimageurl", productResult.get("smallimageurl"));
+                lockerItem.put("author", productResult.get("author"));
+                lockerItem.put("userPointer",ParseUser.getCurrentUser());
+
+
+                //Set the default flags
+
+                //Honor the user preferences
+
+                //Add to the locker
+                lockerItem.saveInBackground();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("DEBUG",error.getMessage());
+                error.printStackTrace();
+            }
+        });
+        requestQueue.add(stringRequest);
+    }
     public void onManualRequest(View view) {
         //Invoke manual enrty activity
         String code =  etProductCode.getText().toString();
         Toast.makeText(this, "Manual: "+ code, Toast.LENGTH_SHORT).show();
-
+        createLockerItem(code);
     }
 
     @Override
