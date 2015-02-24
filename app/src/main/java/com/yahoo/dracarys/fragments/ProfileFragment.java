@@ -21,7 +21,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.yahoo.dracarys.R;
-import com.yahoo.dracarys.adapters.LineItemAdapter;
+import com.yahoo.dracarys.adapters.ProfileLineItemAdapter;
 import com.yahoo.dracarys.helpers.VolleySingleton;
 import com.yahoo.dracarys.interfaces.OnFragmentInteractionListener;
 import com.yahoo.dracarys.models.BookLineItem;
@@ -49,7 +49,7 @@ public class ProfileFragment extends Fragment implements OnFragmentInteractionLi
     String imageUrl;
 
     private RecyclerView recyclerView;
-    private LineItemAdapter lineItemAdapter;
+    private ProfileLineItemAdapter lineItemAdapter;
     List<BookLineItem> bookLineItems;
 
 
@@ -204,7 +204,7 @@ public class ProfileFragment extends Fragment implements OnFragmentInteractionLi
         }
 
         recyclerView = (RecyclerView) layout.findViewById(R.id.usertimeline_rcview);
-        lineItemAdapter = new LineItemAdapter(getActivity(), bookLineItems);
+        lineItemAdapter = new ProfileLineItemAdapter(getActivity(), bookLineItems);
         recyclerView.setAdapter(lineItemAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 

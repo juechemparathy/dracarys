@@ -84,9 +84,7 @@ public class AddActivity extends ActionBarActivity{
             public void onResponse(String response) {
                 Log.d("DEBUG", "Calling AmazonFetcher");
                 productResult = AmazonFetcher.parseXMLInput(response);
-                String userObjId = ParseUser.getCurrentUser().getObjectId();
                 ParseObject lockerItem = new ParseObject("Locker");
-                lockerItem.put("userObjId", userObjId);
                 lockerItem.put("title", productResult.get("title"));
                 lockerItem.put("ean", productResult.get("ean"));
                 lockerItem.put("smallimageurl", productResult.get("smallimageurl"));

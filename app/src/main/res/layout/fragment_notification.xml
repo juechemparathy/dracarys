@@ -4,8 +4,11 @@
     tools:context="com.yahoo.dracarys.fragments.NotificationFragment"
     android:background="@android:color/white">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/notification_timeline_rcview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background_floating_material_light">
+    </android.support.v7.widget.RecyclerView>
 
 </FrameLayout>

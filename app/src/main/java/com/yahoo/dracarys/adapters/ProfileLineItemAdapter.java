@@ -2,7 +2,6 @@ package com.yahoo.dracarys.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +11,6 @@ import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.ParseUser;
 import com.yahoo.dracarys.R;
 import com.yahoo.dracarys.helpers.VolleySingleton;
 import com.yahoo.dracarys.models.BookLineItem;
@@ -26,7 +20,7 @@ import java.util.List;
 /**
  * Created by jue on 1/31/15.
  */
-public class LineItemAdapter extends RecyclerView.Adapter<LineItemAdapter.LineItemViewHolder> {
+public class ProfileLineItemAdapter extends RecyclerView.Adapter<ProfileLineItemAdapter.LineItemViewHolder> {
 
 
     private LayoutInflater layoutInflater;
@@ -35,7 +29,7 @@ public class LineItemAdapter extends RecyclerView.Adapter<LineItemAdapter.LineIt
     VolleySingleton volleySingleton;
     ImageLoader imageLoader;
 
-    public LineItemAdapter(Context context, List<BookLineItem> data) {
+    public ProfileLineItemAdapter(Context context, List<BookLineItem> data) {
         this.context = context;
         this.layoutInflater = LayoutInflater.from(context);
         this.data = data;
@@ -50,7 +44,7 @@ public class LineItemAdapter extends RecyclerView.Adapter<LineItemAdapter.LineIt
 
     @Override
     public LineItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View lineItemView = layoutInflater.inflate(R.layout.book_lineitem, parent, false);
+        View lineItemView = layoutInflater.inflate(R.layout.book_profile_lineitem, parent, false);
         LineItemViewHolder viewHolder = new LineItemViewHolder(lineItemView);
         return viewHolder;
     }
@@ -63,11 +57,6 @@ public class LineItemAdapter extends RecyclerView.Adapter<LineItemAdapter.LineIt
         holder.username.setText(current.getUsername());
         holder.author.setText(current.getAuthor());
         holder.age.setText(current.getAge());
-        if(current.getStar()==0) {
-            holder.star.setImageResource(R.drawable.book_star_empty);
-        }else{
-            holder.star.setImageResource(R.drawable.book_star_filled);
-        }
         if(current.getImageUrl()!=null){
             imageLoader.get(current.getImageUrl(),new ImageLoader.ImageListener() {
                 @Override
@@ -93,9 +82,6 @@ public class LineItemAdapter extends RecyclerView.Adapter<LineItemAdapter.LineIt
     class LineItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView title;
         ImageView icon;
-        ImageView star;
-        ImageView addtomine;
-        ImageView requestLoan;
         TextView username;
         TextView author;
         TextView age;
@@ -107,53 +93,10 @@ public class LineItemAdapter extends RecyclerView.Adapter<LineItemAdapter.LineIt
             author = (TextView) itemView.findViewById(R.id.tv_author);
             age = (TextView) itemView.findViewById(R.id.tv_age);
             icon = (ImageView) itemView.findViewById(R.id.iv_drawer);
-            star = (ImageView) itemView.findViewById(R.id.iv_star);
-            addtomine = (ImageView) itemView.findViewById(R.id.iv_addtomine);
-            requestLoan = (ImageView) itemView.findViewById(R.id.iv_requestLoan);
 
             icon.setOnClickListener(this);
             title.setOnClickListener(this);
             username.setOnClickListener(this);
-            star.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    final ParseUser user = ParseUser.getCurrentUser();
-                    BookLineItem bookLineItem = data.get(getPosition());
-                    final ParseObject bookObject = bookLineItem.getParseBookObject();
-
-                    ParseQuery<ParseObject> query = ParseQuery.getQuery("Favorites");
-                    query.whereEqualTo("userPointer", user);
-                    query.whereEqualTo("lockerPointer", bookObject);
-                    query.findInBackground(new FindCallback<ParseObject>() {
-                        public void done(List<ParseObject> dataList, ParseException e) {
-
-                            if (e!=null){
-                                Toast.makeText(context, "Something went wrong.", Toast.LENGTH_SHORT).show();
-                                Log.d("score", "Retrieved " + dataList.size() + " scores");
-                            }
-                            if (dataList.size() == 0) {
-                                ParseObject favoriteObject  = new ParseObject("Favorites");
-                                favoriteObject.put("userPointer",user);
-                                favoriteObject.put("lockerPointer", bookObject);
-                                favoriteObject.put("state","A");
-                                favoriteObject.saveInBackground();
-
-                                //change the star
-                                notifyDataSetChanged();
-                                Toast.makeText(context, "Added to your favorites.", Toast.LENGTH_SHORT).show();
-                                Log.d("score", "Retrieved " + dataList.size() + " scores");
-                            } else {
-                                Toast.makeText(context, "Already your favorite.", Toast.LENGTH_SHORT).show();
-                                Log.d("score", "Retrieved " + dataList.size() + " scores");
-                            }
-
-
-                        }
-                    });
-                }
-            });
-            addtomine.setOnClickListener(this);
-            requestLoan.setOnClickListener(this);
         }
 
         @Override

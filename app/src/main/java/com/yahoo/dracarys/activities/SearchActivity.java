@@ -2,26 +2,53 @@ package com.yahoo.dracarys.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.yahoo.dracarys.R;
+import com.yahoo.dracarys.adapters.LineItemAdapter;
+import com.yahoo.dracarys.models.BookLineItem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SearchActivity extends ActionBarActivity {
 
     private Toolbar toolbar;
+    private RecyclerView recyclerView;
+    private LineItemAdapter lineItemAdapter;
+    List<BookLineItem> bookLineItems = new ArrayList<BookLineItem>();
+    String searchKey;
+    EditText et_search;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        toolbar =  (Toolbar)findViewById(R.id.app_bar);
+        toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        recyclerView = (RecyclerView) findViewById(R.id.search_rcview);
+        lineItemAdapter = new LineItemAdapter(this, bookLineItems);
+        recyclerView.setAdapter(lineItemAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        et_search = (EditText) findViewById(R.id.et_search);
     }
 
 
@@ -45,5 +72,37 @@ public class SearchActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void searchLibrary(View view) {
+        searchKey = et_search.getText().toString();
+        if (searchKey != null && searchKey.trim().length() > 0) {
+            bookLineItems = new ArrayList<BookLineItem>();
+            final ParseUser user = ParseUser.getCurrentUser();
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("Locker");
+            query.include("lockerPointer");
+            query.whereContains("title", searchKey);
+            query.findInBackground(new FindCallback<ParseObject>() {
+                public void done(List<ParseObject> lockerList, ParseException e) {
+                    if (e == null) {
+                        Log.d("SEARCH", "Retrieved " + lockerList.size() + " items");
+                        for (ParseObject parseObject : lockerList) {
+                            BookLineItem bookLineItem = new BookLineItem();
+                            bookLineItem.setAuthor(parseObject.getString("author"));
+                            bookLineItem.setImageUrl(parseObject.getString("smallimageurl"));
+                            bookLineItem.setTitle(parseObject.getString("title"));
+                            bookLineItem.setUsername(parseObject.getString(user.getUsername()));
+                            bookLineItem.setAge(parseObject.getString("createdAt"));
+                            bookLineItems.add(bookLineItem);
+                        }
+                        lineItemAdapter.setBookLineItemList(bookLineItems);
+                        lineItemAdapter.notifyDataSetChanged();
+                    } else {
+
+                        Log.d("LOCKER", "Error: " + e.getMessage());
+                    }
+                }
+            });
+        }
     }
 }

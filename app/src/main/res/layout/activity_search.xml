@@ -2,23 +2,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.yahoo.dracarys.activities.SearchActivity">
+    tools:context="com.yahoo.dracarys.activities.SearchActivity"
+    android:background="@android:color/white">
+
 
     <include
         android:id="@+id/app_bar"
-        layout="@layout/app_bar" />
+        layout="@layout/app_bar"
+        />
 
-    <LinearLayout
-        android:id="@+id/login_general_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/app_bar">
-    <TextView
+    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/search"
-
+        android:id="@+id/et_search"
+        android:layout_below="@+id/app_bar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/bt_search"
+        android:layout_toStartOf="@+id/bt_search"
+        android:cursorVisible="true"
         />
-    </LinearLayout>
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/search_rcview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background_floating_material_light"
+        android:orientation="vertical"
+        android:weightSum="1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/bt_search"
+        android:layout_alignParentBottom="true">
+    </android.support.v7.widget.RecyclerView>
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Search Library"
+        android:id="@+id/bt_search"
+        android:onClick="searchLibrary"
+        android:layout_alignTop="@+id/et_search"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 </RelativeLayout>

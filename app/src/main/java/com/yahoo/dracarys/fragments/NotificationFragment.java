@@ -4,13 +4,26 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.yahoo.dracarys.R;
+import com.yahoo.dracarys.adapters.NotificationLineItemAdapter;
 import com.yahoo.dracarys.interfaces.OnFragmentInteractionListener;
+import com.yahoo.dracarys.models.BookLineItem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class NotificationFragment extends Fragment implements OnFragmentInteractionListener {
@@ -20,6 +33,10 @@ public class NotificationFragment extends Fragment implements OnFragmentInteract
     private int position;
     private TextView tvPagePosition;
     private OnFragmentInteractionListener mListener;
+
+    private RecyclerView recyclerView;
+    private NotificationLineItemAdapter lineItemAdapter;
+    List<BookLineItem> bookLineItems;
 
     /**
      * Use this factory method to create a new instance of
@@ -56,6 +73,39 @@ public class NotificationFragment extends Fragment implements OnFragmentInteract
         if(bundle!=null) {
             tvPagePosition.setText("Page " +bundle.getInt("position"));
         }
+
+        if(bookLineItems==null) {
+            bookLineItems = new ArrayList<BookLineItem>();
+            final ParseUser user = ParseUser.getCurrentUser();
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("Favorites");
+            query.include("lockerPointer");
+            query.whereEqualTo("userPointer", user);
+            query.findInBackground(new FindCallback<ParseObject>() {
+                public void done(List<ParseObject> lockerList, ParseException e) {
+                    if (e == null) {
+                        Log.d("LOCKER", "Retrieved " + lockerList.size() + " items");
+                        for (ParseObject parseObject : lockerList) {
+                            ParseObject lockerObj = parseObject.getParseObject("lockerPointer");
+                            BookLineItem bookLineItem = new BookLineItem();
+                            bookLineItem.setAuthor(lockerObj.getString("author"));
+                            bookLineItem.setImageUrl(lockerObj.getString("smallimageurl"));
+                            bookLineItem.setTitle(lockerObj.getString("title"));
+                            bookLineItem.setUsername(lockerObj.getString(user.getUsername()));
+                            bookLineItem.setAge(lockerObj.getString("createdAt"));
+                            bookLineItems.add(bookLineItem);
+                        }
+                        lineItemAdapter.notifyDataSetChanged();
+                    } else {
+                        Log.d("LOCKER", "Error: " + e.getMessage());
+                    }
+                }
+            });
+        }
+
+        recyclerView = (RecyclerView) layout.findViewById(R.id.notification_timeline_rcview);
+        lineItemAdapter = new NotificationLineItemAdapter(getActivity(), bookLineItems);
+        recyclerView.setAdapter(lineItemAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         return layout;
     }

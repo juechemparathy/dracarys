@@ -48,10 +48,6 @@
             android:name=".activities.LoginActivity"
             android:label="@string/title_activity_login" >
         </activity>
-        <activity
-            android:name=".activities.LogoutActivity"
-            android:label="@string/title_activity_logout" >
-        </activity>
     </application>
 
 </manifest>
