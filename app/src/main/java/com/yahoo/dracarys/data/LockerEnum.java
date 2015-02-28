@@ -9,20 +9,16 @@ import java.util.Map;
  */
 public class LockerEnum {
 
-    public static enum LockerState {
-        LOANER_CLOSED_TO_SHARE(7,"LOANER_CLOSED_TO_SHARE"),
-        LOANER_OPEN_TO_SHARE(0,"LOANER_OPEN_TO_SHARE"),
-        LOANER_REQUEST_RECEIVED(1,"LOANER_REQUEST_RECEIVED"),
-        LENDEE_LEND_REQUESTED(2,"LENDEE_LEND_REQUESTED"),
-        LOANER_REQUEST_ACCEPTED(3,"LOANER_REQUEST_ACCEPTED"),
-        LENDEE_LEND_ACCEPTED(4,"LENDEE_LEND_ACCEPTED"),
-        LENDEE_LEND_REJECTED(5,"LENDEE_LEND_REJECTED"),
-        LENDEE_LEND_RETURNED(6,"LENDEE_LEND_RETURNED");
+    public static enum LendState {
+        LEND_REQUESTED(1,"LEND_REQUESTED"),
+        LEND_ACCEPTED(2,"LEND_ACCEPTED"),
+        LEND_REJECTED(3,"LEND_REJECTED"),
+        LEND_RETURNED(4,"LEND_RETURNED");
 
         private final int status;
         private final String name;
 
-        LockerState(final int status, final String name) {
+        LendState(final int status, final String name) {
             this.status = status;
             this.name = name;
         }
@@ -31,12 +27,12 @@ public class LockerEnum {
             return status;
         }
         public String getName() { return name; }
-        private static  Map<Integer,LockerState> enumMap = new HashMap<Integer, LockerState>();
+        private static  Map<Integer,LendState> enumMap = new HashMap<Integer, LendState>();
         static {
-            for(LockerState s : EnumSet.allOf(LockerState.class))
+            for(LendState s : EnumSet.allOf(LendState.class))
                 enumMap.put(s.getStatus(), s);
         }
-        public static LockerState getStatus(int code){
+        public static LendState getStatus(int code){
             return enumMap.get(code);
         }
     }

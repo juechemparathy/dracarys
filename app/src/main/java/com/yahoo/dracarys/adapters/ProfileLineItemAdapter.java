@@ -85,6 +85,7 @@ public class ProfileLineItemAdapter extends RecyclerView.Adapter<ProfileLineItem
         TextView username;
         TextView author;
         TextView age;
+        ImageView lend;
 
         public LineItemViewHolder(final View itemView) {
             super(itemView);
@@ -93,10 +94,18 @@ public class ProfileLineItemAdapter extends RecyclerView.Adapter<ProfileLineItem
             author = (TextView) itemView.findViewById(R.id.tv_author);
             age = (TextView) itemView.findViewById(R.id.tv_age);
             icon = (ImageView) itemView.findViewById(R.id.iv_drawer);
+            lend = (ImageView) itemView.findViewById(R.id.iv_lend_accept_reject);
+
 
             icon.setOnClickListener(this);
             title.setOnClickListener(this);
             username.setOnClickListener(this);
+            lend.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(context, "Updated loan status.", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
         @Override

@@ -124,36 +124,31 @@ public class ProfileFragment extends Fragment implements OnFragmentInteractionLi
                     //fall back to default image
                 }
             });
-        }else{
+        } else {
             ivProfileImage.setImageResource(R.drawable.book_profile);
         }
 
 
-        //following  - total count of userObjID
-        //followers -  total count of followerObjId
-
-        query = ParseQuery.getQuery("Followers");
-        query.whereEqualTo("followerObjId", user.getObjectId());
+        query = ParseQuery.getQuery("Follower");
+        query.whereEqualTo("follower", ParseUser.getCurrentUser());
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> followerList, ParseException e) {
                 if (e == null) {
-                    Log.d("FOLLOWER", "Retrieved " + followerList.size() + " items");
-                    tvFollowers.setText(followerList.size() + "followers");
+                    tvFollowers.setText(followerList.size() + " followers ");
                 } else {
-                    Log.d("FOLLOWER", "Error: " + e.getMessage());
+                    Log.d("LOCKER", "Error: " + e.getMessage());
                 }
             }
         });
 
-        query = ParseQuery.getQuery("Followers");
-        query.whereEqualTo("userObjId", user.getObjectId());
+        query = ParseQuery.getQuery("Follower");
+        query.whereEqualTo("following", ParseUser.getCurrentUser());
         query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> followerList, ParseException e) {
+            public void done(List<ParseObject> followingList, ParseException e) {
                 if (e == null) {
-                    Log.d("FOLLOWER", "Retrieved " + followerList.size() + " items");
-                    tvFollowing.setText(followerList.size() + "following");
+                    tvFollowing.setText(followingList.size() + " following");
                 } else {
-                    Log.d("FOLLOWER", "Error: " + e.getMessage());
+                    Log.d("LOCKER", "Error: " + e.getMessage());
                 }
             }
         });
@@ -177,7 +172,7 @@ public class ProfileFragment extends Fragment implements OnFragmentInteractionLi
         tvFollowing = (TextView) layout.findViewById(R.id.tvFollowing);
         loadProfileInfo();
 
-        if(bookLineItems==null) {
+        if (bookLineItems == null) {
             bookLineItems = new ArrayList<BookLineItem>();
             final ParseUser user = ParseUser.getCurrentUser();
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Locker");
@@ -193,6 +188,7 @@ public class ProfileFragment extends Fragment implements OnFragmentInteractionLi
                             bookLineItem.setTitle(parseObject.getString("title"));
                             bookLineItem.setUsername(parseObject.getString(user.getUsername()));
                             bookLineItem.setAge(parseObject.getString("createdAt"));
+                            bookLineItem.setEan(parseObject.getString("ean"));
                             bookLineItems.add(bookLineItem);
                             lineItemAdapter.notifyDataSetChanged();
                         }
@@ -207,6 +203,7 @@ public class ProfileFragment extends Fragment implements OnFragmentInteractionLi
         lineItemAdapter = new ProfileLineItemAdapter(getActivity(), bookLineItems);
         recyclerView.setAdapter(lineItemAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
 
         return layout;
     }

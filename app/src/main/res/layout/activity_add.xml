@@ -3,7 +3,7 @@ xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 tools:context="com.yahoo.dracarys.activities.AddActivity"
-    android:background="@android:color/white">
+    android:background="@drawable/appbar_wood">
 
 <include
     android:id="@+id/app_bar"

@@ -92,6 +92,7 @@ public class NotificationFragment extends Fragment implements OnFragmentInteract
                             bookLineItem.setTitle(lockerObj.getString("title"));
                             bookLineItem.setUsername(lockerObj.getString(user.getUsername()));
                             bookLineItem.setAge(lockerObj.getString("createdAt"));
+                            bookLineItem.setEan(lockerObj.getString("ean"));
                             bookLineItems.add(bookLineItem);
                         }
                         lineItemAdapter.notifyDataSetChanged();

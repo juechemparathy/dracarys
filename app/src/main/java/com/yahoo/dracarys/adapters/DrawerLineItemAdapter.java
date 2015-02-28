@@ -2,6 +2,7 @@ package com.yahoo.dracarys.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,6 +65,7 @@ public class DrawerLineItemAdapter extends RecyclerView.Adapter<DrawerLineItemAd
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.tv_drawer);
             icon = (ImageView) itemView.findViewById(R.id.iv_drawer);
+            title.setTextColor(Color.BLACK);
             icon.setOnClickListener(this);
             title.setOnClickListener(this);
         }

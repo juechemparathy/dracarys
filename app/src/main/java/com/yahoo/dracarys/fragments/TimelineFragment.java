@@ -91,6 +91,7 @@ public class TimelineFragment extends Fragment implements OnFragmentInteractionL
                             bookLineItem.setAuthor(parseObject.getString("author"));
                             bookLineItem.setImageUrl(parseObject.getString("smallimageurl"));
                             bookLineItem.setTitle(parseObject.getString("title"));
+                            bookLineItem.setEan(parseObject.getString("ean"));
                             bookLineItem.setUsername(parseObject.getParseUser("userPointer").getUsername());
                             Date date =  parseObject.getCreatedAt();
                             bookLineItem.setAge(getAge(date));

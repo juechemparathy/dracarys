@@ -14,6 +14,7 @@ public class BookLineItem {
     private String username;
     private String age;
     private int star;
+    private String ean;
     private ParseObject parseBookObject;
 
 
@@ -23,6 +24,14 @@ public class BookLineItem {
 
     public void setParseBookObject(ParseObject parseBookObject) {
         this.parseBookObject = parseBookObject;
+    }
+
+    public String getEan() {
+        return ean;
+    }
+
+    public void setEan(String ean) {
+        this.ean = ean;
     }
 
     public int getStar() {

@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -85,20 +86,24 @@ public class SearchActivity extends ActionBarActivity {
             query.findInBackground(new FindCallback<ParseObject>() {
                 public void done(List<ParseObject> lockerList, ParseException e) {
                     if (e == null) {
-                        Log.d("SEARCH", "Retrieved " + lockerList.size() + " items");
-                        for (ParseObject parseObject : lockerList) {
-                            BookLineItem bookLineItem = new BookLineItem();
-                            bookLineItem.setAuthor(parseObject.getString("author"));
-                            bookLineItem.setImageUrl(parseObject.getString("smallimageurl"));
-                            bookLineItem.setTitle(parseObject.getString("title"));
-                            bookLineItem.setUsername(parseObject.getString(user.getUsername()));
-                            bookLineItem.setAge(parseObject.getString("createdAt"));
-                            bookLineItems.add(bookLineItem);
+                        if(lockerList.size()>0) {
+                            Log.d("SEARCH", "Retrieved " + lockerList.size() + " items");
+                            for (ParseObject parseObject : lockerList) {
+                                BookLineItem bookLineItem = new BookLineItem();
+                                bookLineItem.setAuthor(parseObject.getString("author"));
+                                bookLineItem.setImageUrl(parseObject.getString("smallimageurl"));
+                                bookLineItem.setTitle(parseObject.getString("title"));
+                                bookLineItem.setUsername(parseObject.getString(user.getUsername()));
+                                bookLineItem.setAge(parseObject.getString("createdAt"));
+                                bookLineItem.setEan(parseObject.getString("ean"));
+                                bookLineItems.add(bookLineItem);
+                            }
+                            lineItemAdapter.setBookLineItemList(bookLineItems);
+                            lineItemAdapter.notifyDataSetChanged();
+                        }else{
+                            Toast.makeText(getApplicationContext(),"No books found.",Toast.LENGTH_SHORT).show();
                         }
-                        lineItemAdapter.setBookLineItemList(bookLineItems);
-                        lineItemAdapter.notifyDataSetChanged();
                     } else {
-
                         Log.d("LOCKER", "Error: " + e.getMessage());
                     }
                 }

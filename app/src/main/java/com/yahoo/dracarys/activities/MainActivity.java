@@ -39,7 +39,7 @@ public class MainActivity extends ActionBarActivity implements OnFragmentInterac
         mTabs = (SlidingTabLayout) findViewById(R.id.tabs);
         mTabs.setDistributeEvenly(true);
         mTabs.setCustomTabView(R.layout.main_tab_view, R.id.tabText);
-        mTabs.setBackgroundColor(getResources().getColor(R.color.primary_light));
+        mTabs.setBackgroundResource(R.drawable.appbar_wood);
         mTabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
             @Override
             public int getIndicatorColor(int position) {

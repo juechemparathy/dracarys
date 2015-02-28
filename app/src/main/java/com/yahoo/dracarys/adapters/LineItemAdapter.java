@@ -18,6 +18,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.yahoo.dracarys.R;
+import com.yahoo.dracarys.data.LockerEnum;
 import com.yahoo.dracarys.helpers.VolleySingleton;
 import com.yahoo.dracarys.models.BookLineItem;
 
@@ -43,9 +44,9 @@ public class LineItemAdapter extends RecyclerView.Adapter<LineItemAdapter.LineIt
         imageLoader = volleySingleton.getImageLoader();
     }
 
-    public void setBookLineItemList(List<BookLineItem> data){
-        this.data=data;
-        notifyItemRangeChanged(0,data.size());
+    public void setBookLineItemList(List<BookLineItem> data) {
+        this.data = data;
+        notifyItemRangeChanged(0, data.size());
     }
 
     @Override
@@ -63,13 +64,13 @@ public class LineItemAdapter extends RecyclerView.Adapter<LineItemAdapter.LineIt
         holder.username.setText(current.getUsername());
         holder.author.setText(current.getAuthor());
         holder.age.setText(current.getAge());
-        if(current.getStar()==0) {
+        if (current.getStar() == 0) {
             holder.star.setImageResource(R.drawable.book_star_empty);
-        }else{
+        } else {
             holder.star.setImageResource(R.drawable.book_star_filled);
         }
-        if(current.getImageUrl()!=null){
-            imageLoader.get(current.getImageUrl(),new ImageLoader.ImageListener() {
+        if (current.getImageUrl() != null) {
+            imageLoader.get(current.getImageUrl(), new ImageLoader.ImageListener() {
                 @Override
                 public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
                     holder.icon.setImageBitmap(response.getBitmap());
@@ -99,6 +100,7 @@ public class LineItemAdapter extends RecyclerView.Adapter<LineItemAdapter.LineIt
         TextView username;
         TextView author;
         TextView age;
+        ImageView iv_follow;
 
         public LineItemViewHolder(final View itemView) {
             super(itemView);
@@ -110,6 +112,7 @@ public class LineItemAdapter extends RecyclerView.Adapter<LineItemAdapter.LineIt
             star = (ImageView) itemView.findViewById(R.id.iv_star);
             addtomine = (ImageView) itemView.findViewById(R.id.iv_addtomine);
             requestLoan = (ImageView) itemView.findViewById(R.id.iv_requestLoan);
+            iv_follow = (ImageView) itemView.findViewById(R.id.iv_follow);
 
             icon.setOnClickListener(this);
             title.setOnClickListener(this);
@@ -127,15 +130,15 @@ public class LineItemAdapter extends RecyclerView.Adapter<LineItemAdapter.LineIt
                     query.findInBackground(new FindCallback<ParseObject>() {
                         public void done(List<ParseObject> dataList, ParseException e) {
 
-                            if (e!=null){
+                            if (e != null) {
                                 Toast.makeText(context, "Something went wrong.", Toast.LENGTH_SHORT).show();
                                 Log.d("score", "Retrieved " + dataList.size() + " scores");
                             }
                             if (dataList.size() == 0) {
-                                ParseObject favoriteObject  = new ParseObject("Favorites");
-                                favoriteObject.put("userPointer",user);
+                                ParseObject favoriteObject = new ParseObject("Favorites");
+                                favoriteObject.put("userPointer", user);
                                 favoriteObject.put("lockerPointer", bookObject);
-                                favoriteObject.put("state","A");
+                                favoriteObject.put("state", "A");
                                 favoriteObject.saveInBackground();
 
                                 //change the star
@@ -146,20 +149,123 @@ public class LineItemAdapter extends RecyclerView.Adapter<LineItemAdapter.LineIt
                                 Toast.makeText(context, "Already your favorite.", Toast.LENGTH_SHORT).show();
                                 Log.d("score", "Retrieved " + dataList.size() + " scores");
                             }
+                        }
+                    });
+                }
+            });
+            addtomine.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    final ParseUser user = ParseUser.getCurrentUser();
+                    final BookLineItem bookLineItem = data.get(getPosition());
+                    final ParseObject bookObject = bookLineItem.getParseBookObject();
 
+                    ParseQuery<ParseObject> query = ParseQuery.getQuery("Locker");
+                    query.whereEqualTo("ean", bookObject.get("ean"));
+                    query.whereEqualTo("userPointer", ParseUser.getCurrentUser());
+                    query.findInBackground(new FindCallback<ParseObject>() {
+                        public void done(List<ParseObject> dataList, ParseException e) {
+
+                            if (e != null) {
+                                Toast.makeText(context, "Something went wrong.", Toast.LENGTH_SHORT).show();
+                                Log.d("score", "Retrieved " + dataList.size() + " scores");
+                            }
+                            if (dataList.size() == 0) {
+                                ParseObject lockerItem = new ParseObject("Locker");
+                                lockerItem.put("title", bookLineItem.getTitle());
+                                lockerItem.put("ean", bookLineItem.getEan());
+                                lockerItem.put("smallimageurl", bookLineItem.getImageUrl());
+                                lockerItem.put("author", bookLineItem.getAuthor());
+                                lockerItem.put("userPointer", ParseUser.getCurrentUser());
+                                lockerItem.saveInBackground();
+
+                                //change the star
+                                notifyDataSetChanged();
+                                Toast.makeText(context, "Added to your locker.", Toast.LENGTH_SHORT).show();
+                                Log.d("Locker", "Retrieved " + dataList.size() + " scores");
+                            } else {
+                                Toast.makeText(context, "Already in your locker.", Toast.LENGTH_SHORT).show();
+                                Log.d("Locker", "Retrieved " + dataList.size() + " scores");
+                            }
 
                         }
                     });
                 }
             });
-            addtomine.setOnClickListener(this);
-            requestLoan.setOnClickListener(this);
+
+            requestLoan.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    final ParseUser lendeePointer = ParseUser.getCurrentUser();
+                    final BookLineItem bookLineItem = data.get(getPosition());
+                    final ParseObject lenderPointer = bookLineItem.getParseBookObject().getParseUser("userPointer");
+                    final ParseObject lockerPointer = bookLineItem.getParseBookObject();
+                    ParseQuery<ParseObject> query = ParseQuery.getQuery("Lend");
+                    query.whereEqualTo("lenderPointer", lenderPointer);
+                    query.whereEqualTo("lendeePointer", lendeePointer);
+                    query.whereEqualTo("lockerPointer", lockerPointer);
+                    query.findInBackground(new FindCallback<ParseObject>() {
+                        public void done(List<ParseObject> dataList, ParseException e) {
+
+                            if (e != null) {
+                                Toast.makeText(context, "Something went wrong.", Toast.LENGTH_SHORT).show();
+                                Log.d("score", "Retrieved " + dataList.size() + " scores");
+                            }
+                            if (dataList.size() == 0) {
+                                ParseObject favoriteObject = new ParseObject("Lend");
+                                favoriteObject.put("lendeePointer", lendeePointer);
+                                favoriteObject.put("lenderPointer", lenderPointer);
+                                favoriteObject.put("lockerPointer", lockerPointer);
+                                favoriteObject.put("status", LockerEnum.LendState.LEND_REQUESTED.getStatus());
+                                favoriteObject.saveInBackground();
+                                notifyDataSetChanged();
+                                Toast.makeText(context, "Loan requested.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(context, "Already requested loan.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+            });
+
+            iv_follow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    final ParseUser followerPointer = ParseUser.getCurrentUser();
+                    final BookLineItem bookLineItem = data.get(getPosition());
+                    final ParseObject userPointer = bookLineItem.getParseBookObject().getParseUser("userPointer");
+
+                    ParseQuery<ParseObject> query = ParseQuery.getQuery("Follower");
+                    query.whereEqualTo("follower", userPointer);
+                    query.whereEqualTo("following", followerPointer);
+                    query.findInBackground(new FindCallback<ParseObject>() {
+                        public void done(List<ParseObject> dataList, ParseException e) {
+
+                            if (e != null) {
+                                Toast.makeText(context, "Something went wrong.", Toast.LENGTH_SHORT).show();
+                                Log.d("score", "Retrieved " + dataList.size() + " scores");
+                            }
+                            if (dataList.size() == 0) {
+                                ParseObject favoriteObject = new ParseObject("Follower");
+                                favoriteObject.put("follower", userPointer);
+                                favoriteObject.put("following", followerPointer);
+                                favoriteObject.put("status", "A");
+                                favoriteObject.saveInBackground();
+                                notifyDataSetChanged();
+                                Toast.makeText(context, "Following " + bookLineItem.getUsername() + " now.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(context, "Already following "+bookLineItem.getUsername(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+            });
         }
 
         @Override
         public void onClick(View view) {
             int position = getPosition();
-            if(view == icon){
+            if (view == icon) {
                 Toast.makeText(context, "Position - " + position, Toast.LENGTH_SHORT).show();
             }
         }

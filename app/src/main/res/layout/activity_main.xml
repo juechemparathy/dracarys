@@ -14,7 +14,8 @@
         tools:context=".MainActivity">
         <include
             android:id="@+id/app_bar"
-            layout="@layout/app_bar" />
+            layout="@layout/app_bar"
+            />
 
 
         <com.yahoo.dracarys.helpers.SlidingTabLayout

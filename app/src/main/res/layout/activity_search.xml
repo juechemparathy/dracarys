@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.yahoo.dracarys.activities.SearchActivity"
-    android:background="@android:color/white">
+    android:background="@drawable/appbar_wood">
 
 
     <include
@@ -27,7 +27,6 @@
         android:id="@+id/search_rcview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/background_floating_material_light"
         android:orientation="vertical"
         android:weightSum="1"
         android:layout_alignParentLeft="true"
