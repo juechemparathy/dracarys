@@ -43,6 +43,7 @@ public class ProfileFragment extends Fragment implements OnFragmentInteractionLi
     private TextView tvTagLine;
     private TextView tvFollowers;
     private TextView tvFollowing;
+    private TextView tvLendRequests;
     private String userScreenName = ""; // 0 means self
     ImageLoader imageLoader;
     VolleySingleton volleySingleton;
@@ -98,6 +99,7 @@ public class ProfileFragment extends Fragment implements OnFragmentInteractionLi
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Locker");
         query.whereEqualTo("userObjId", user.getObjectId());
+        query.include("userPointer");
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> lockerList, ParseException e) {
                 if (e == null) {
@@ -131,6 +133,7 @@ public class ProfileFragment extends Fragment implements OnFragmentInteractionLi
 
         query = ParseQuery.getQuery("Follower");
         query.whereEqualTo("follower", ParseUser.getCurrentUser());
+        query.whereEqualTo("status", 1);
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> followerList, ParseException e) {
                 if (e == null) {
@@ -147,6 +150,18 @@ public class ProfileFragment extends Fragment implements OnFragmentInteractionLi
             public void done(List<ParseObject> followingList, ParseException e) {
                 if (e == null) {
                     tvFollowing.setText(followingList.size() + " following");
+                } else {
+                    Log.d("LOCKER", "Error: " + e.getMessage());
+                }
+            }
+        });
+
+        query = ParseQuery.getQuery("Lend");
+        query.whereEqualTo("lenderPointer", ParseUser.getCurrentUser());
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> followingList, ParseException e) {
+                if (e == null) {
+                    tvLendRequests.setText(followingList.size() + " active loans");
                 } else {
                     Log.d("LOCKER", "Error: " + e.getMessage());
                 }
@@ -170,6 +185,7 @@ public class ProfileFragment extends Fragment implements OnFragmentInteractionLi
         tvTagLine = (TextView) layout.findViewById(R.id.tvTagLine);
         tvFollowers = (TextView) layout.findViewById(R.id.tvFollowers);
         tvFollowing = (TextView) layout.findViewById(R.id.tvFollowing);
+        tvLendRequests = (TextView) layout.findViewById(R.id.tvLendRequests);
         loadProfileInfo();
 
         if (bookLineItems == null) {
@@ -186,9 +202,10 @@ public class ProfileFragment extends Fragment implements OnFragmentInteractionLi
                             bookLineItem.setAuthor(parseObject.getString("author"));
                             bookLineItem.setImageUrl(parseObject.getString("smallimageurl"));
                             bookLineItem.setTitle(parseObject.getString("title"));
-                            bookLineItem.setUsername(parseObject.getString(user.getUsername()));
+                            bookLineItem.setUsername(parseObject.getParseUser("userPointer").getUsername());
                             bookLineItem.setAge(parseObject.getString("createdAt"));
                             bookLineItem.setEan(parseObject.getString("ean"));
+                            bookLineItem.setParseBookObject(parseObject);
                             bookLineItems.add(bookLineItem);
                             lineItemAdapter.notifyDataSetChanged();
                         }

@@ -1,5 +1,7 @@
 package com.yahoo.dracarys.adapters;
 
+import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.yahoo.dracarys.R;
+import com.yahoo.dracarys.fragments.LendActionFragment;
 import com.yahoo.dracarys.helpers.VolleySingleton;
 import com.yahoo.dracarys.models.BookLineItem;
 
@@ -103,7 +106,10 @@ public class ProfileLineItemAdapter extends RecyclerView.Adapter<ProfileLineItem
             lend.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(context, "Updated loan status.", Toast.LENGTH_SHORT).show();
+                    LendActionFragment fragment = new LendActionFragment();
+                    fragment.setBookLineItem(data.get(getPosition()));
+                    FragmentManager fm = ((Activity)context).getFragmentManager();
+                    fragment.show(fm,"Lend Action");
                 }
             });
         }

@@ -9,6 +9,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import com.yahoo.dracarys.R;
 import com.yahoo.dracarys.adapters.MainPagerAdapter;
@@ -78,4 +80,13 @@ public class MainActivity extends ActionBarActivity implements OnFragmentInterac
     public void onFragmentInteraction(Uri uri) {
 
     }
+
+    public void onReject(View view) {
+        Toast.makeText(this, "Loan Rejcted", Toast.LENGTH_SHORT);
+    }
+
+    public void onAccept(View view) {
+        Toast.makeText(this,"Loan Accepted",Toast.LENGTH_SHORT);
+    }
+
 }

@@ -61,6 +61,13 @@
             android:layout_marginLeft="20dp"
             android:layout_height="wrap_content"
             android:text="Following"/>
+
+        <TextView
+            android:id="@+id/tvLendRequests"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_height="wrap_content"
+            android:text="Lend Requests"/>
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
