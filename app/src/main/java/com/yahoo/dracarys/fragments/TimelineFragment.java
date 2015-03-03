@@ -81,6 +81,7 @@ public class TimelineFragment extends Fragment implements OnFragmentInteractionL
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Locker");
             query.orderByDescending("updatedAt");
             query.setLimit(100);
+            query.whereNotEqualTo("userPointer", user);
             query.include("userPointer");
             query.findInBackground(new FindCallback<ParseObject>() {
                 public void done(List<ParseObject> lockerList, ParseException e) {

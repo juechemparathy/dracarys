@@ -90,7 +90,8 @@ public class NotificationFragment extends Fragment implements OnFragmentInteract
                             bookLineItem.setAuthor(lockerObj.getString("author"));
                             bookLineItem.setImageUrl(lockerObj.getString("smallimageurl"));
                             bookLineItem.setTitle(lockerObj.getString("title"));
-                            bookLineItem.setUsername(parseObject.getParseUser("userPointer").getUsername());
+                            ParseObject userObject = lockerObj.getParseObject("userPointer");
+                            bookLineItem.setUsername(userObject.getString("username"));
                             bookLineItem.setAge(lockerObj.getString("createdAt"));
                             bookLineItem.setEan(lockerObj.getString("ean"));
                             bookLineItems.add(bookLineItem);
