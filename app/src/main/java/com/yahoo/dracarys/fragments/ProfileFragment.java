@@ -1,6 +1,7 @@
 package com.yahoo.dracarys.fragments;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,6 +23,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.yahoo.dracarys.R;
+import com.yahoo.dracarys.activities.CameraActivity;
 import com.yahoo.dracarys.adapters.ProfileLineItemAdapter;
 import com.yahoo.dracarys.helpers.VolleySingleton;
 import com.yahoo.dracarys.interfaces.OnFragmentInteractionListener;
@@ -33,6 +35,7 @@ import java.util.List;
 
 public class ProfileFragment extends Fragment implements OnFragmentInteractionListener {
     private static final String POSITION = "position";
+    private final int REQUEST_CODE = 20;
 
     // TODO: Rename and change types of parameters
     private int position;
@@ -170,7 +173,6 @@ public class ProfileFragment extends Fragment implements OnFragmentInteractionLi
         });
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -185,13 +187,10 @@ public class ProfileFragment extends Fragment implements OnFragmentInteractionLi
         ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                    Fragment cameraFragment = new CameraFragment();
-//                    FragmentTransaction transaction = getActivity().getFragmentManager()
-//                            .beginTransaction();
-//                    transaction.replace(R.id., cameraFragment);
-//                    transaction.addToBackStack("NewMealFragment");
-//                    transaction.commit();
                 Toast.makeText(getActivity(),"Click your picture!",Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(getActivity(), CameraActivity.class);
+                //i.putExtra("mode", 2); // pass arbitrary data to launched activity
+                startActivity(i);
             }
         });
 

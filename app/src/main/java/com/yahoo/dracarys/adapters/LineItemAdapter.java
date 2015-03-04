@@ -71,17 +71,22 @@ public class LineItemAdapter extends RecyclerView.Adapter<LineItemAdapter.LineIt
             holder.star.setImageResource(R.drawable.book_star_filled);
         }
         if (current.getImageUrl() != null) {
+            Log.d("DEBUG","Image Url: "+current.getImageUrl());
             imageLoader.get(current.getImageUrl(), new ImageLoader.ImageListener() {
                 @Override
                 public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
                     holder.icon.setImageBitmap(response.getBitmap());
+                    Log.d("DEBUG","Image fetched");
                 }
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     //fall back to default image
+                    Log.d("DEBUG","Image fetch errored");
                 }
             });
+        }else{
+            Log.d("DEBUG","No image Url "+current.getEan());
         }
     }
 

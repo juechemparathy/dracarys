@@ -143,6 +143,7 @@ public class CameraFragment extends Fragment {
                 } else {
                     //Add to user obj
                     Toast.makeText(getActivity(),"Saving picture!",Toast.LENGTH_SHORT).show();
+                    getActivity().finish();
                 }
             }
         });
