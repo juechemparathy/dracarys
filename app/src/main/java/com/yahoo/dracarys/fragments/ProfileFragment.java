@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
@@ -181,6 +182,19 @@ public class ProfileFragment extends Fragment implements OnFragmentInteractionLi
         }
 
         ivProfileImage = (ImageView) layout.findViewById(R.id.ivProfileImage);
+        ivProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                    Fragment cameraFragment = new CameraFragment();
+//                    FragmentTransaction transaction = getActivity().getFragmentManager()
+//                            .beginTransaction();
+//                    transaction.replace(R.id., cameraFragment);
+//                    transaction.addToBackStack("NewMealFragment");
+//                    transaction.commit();
+                Toast.makeText(getActivity(),"Click your picture!",Toast.LENGTH_SHORT).show();
+            }
+        });
+
         tvName = (TextView) layout.findViewById(R.id.tvName);
         tvTagLine = (TextView) layout.findViewById(R.id.tvTagLine);
         tvFollowers = (TextView) layout.findViewById(R.id.tvFollowers);

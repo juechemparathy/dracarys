@@ -81,12 +81,5 @@ public class MainActivity extends ActionBarActivity implements OnFragmentInterac
 
     }
 
-    public void onReject(View view) {
-        Toast.makeText(this, "Loan Rejcted", Toast.LENGTH_SHORT);
-    }
-
-    public void onAccept(View view) {
-        Toast.makeText(this,"Loan Accepted",Toast.LENGTH_SHORT);
-    }
 
 }

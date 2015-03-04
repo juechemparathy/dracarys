@@ -10,7 +10,8 @@ import android.text.Spanned;
 import android.text.style.ImageSpan;
 
 import com.yahoo.dracarys.R;
-import com.yahoo.dracarys.fragments.NotificationFragment;
+import com.yahoo.dracarys.fragments.FavoriteFragment;
+import com.yahoo.dracarys.fragments.PersonalTimelineFragment;
 import com.yahoo.dracarys.fragments.ProfileFragment;
 import com.yahoo.dracarys.fragments.TimelineFragment;
 
@@ -24,7 +25,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
     Context context;
 
     String[] tabTitles = {"Timeline", "Notifications", "MyProfile"};
-    int icons[] = {R.drawable.book_stack, R.drawable.book_bookmark, R.drawable.book_profile};
+    int icons[] = {R.drawable.book_stack,R.drawable.book_single, R.drawable.book_bookmark, R.drawable.book_profile};
 
     public MainPagerAdapter(FragmentManager fm,Context c) {
         super(fm);
@@ -36,9 +37,13 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
         if(position==0) {
             TimelineFragment timelineFragment = TimelineFragment.newInstance(position);
             return timelineFragment;
-        }else if(position == 1){
-            NotificationFragment notificationFragment = new NotificationFragment();
-            return notificationFragment;
+        }else if(position==1) {
+            PersonalTimelineFragment personalTimelineFragment = PersonalTimelineFragment.newInstance(position);
+            return personalTimelineFragment;
+        }
+        else if(position == 2){
+            FavoriteFragment favoriteFragment = new FavoriteFragment();
+            return favoriteFragment;
         }else{
             return new ProfileFragment();
         }
@@ -58,6 +63,6 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return 4;
     }
 }

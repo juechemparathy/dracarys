@@ -22,6 +22,7 @@ import com.yahoo.dracarys.data.LockerEnum;
 import com.yahoo.dracarys.helpers.VolleySingleton;
 import com.yahoo.dracarys.models.BookLineItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,7 +32,7 @@ public class LineItemAdapter extends RecyclerView.Adapter<LineItemAdapter.LineIt
 
 
     private LayoutInflater layoutInflater;
-    private List<BookLineItem> data;
+    private List<BookLineItem> data = new ArrayList<>();
     private Context context;
     VolleySingleton volleySingleton;
     ImageLoader imageLoader;

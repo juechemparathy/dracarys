@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class NotificationFragment extends Fragment implements OnFragmentInteractionListener {
+public class FavoriteFragment extends Fragment implements OnFragmentInteractionListener {
     private static final String POSITION = "position";
 
     // TODO: Rename and change types of parameters
@@ -44,15 +44,15 @@ public class NotificationFragment extends Fragment implements OnFragmentInteract
      *
      * @return A new instance of fragment NotificationFragment.
      */
-    public static NotificationFragment newInstance(int position) {
-        NotificationFragment fragment = new NotificationFragment();
+    public static FavoriteFragment newInstance(int position) {
+        FavoriteFragment fragment = new FavoriteFragment();
         Bundle args = new Bundle();
         args.putInt(POSITION, position);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public NotificationFragment() {
+    public FavoriteFragment() {
         // Required empty public constructor
     }
 
@@ -68,7 +68,7 @@ public class NotificationFragment extends Fragment implements OnFragmentInteract
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View layout = inflater.inflate(R.layout.fragment_notification, container, false);
+        View layout = inflater.inflate(R.layout.fragment_favorite, container, false);
         Bundle bundle = getArguments();
         if(bundle!=null) {
             tvPagePosition.setText("Page " +bundle.getInt("position"));
@@ -79,6 +79,7 @@ public class NotificationFragment extends Fragment implements OnFragmentInteract
             final ParseUser user = ParseUser.getCurrentUser();
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Favorites");
             query.include("lockerPointer");
+            query.include("userPointer");
             query.whereEqualTo("userPointer", user);
             query.findInBackground(new FindCallback<ParseObject>() {
                 public void done(List<ParseObject> lockerList, ParseException e) {
