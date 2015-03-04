@@ -16,7 +16,6 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseUser;
 import com.yahoo.dracarys.R;
 import com.yahoo.dracarys.adapters.LineItemAdapter;
 import com.yahoo.dracarys.models.BookLineItem;
@@ -79,9 +78,10 @@ public class SearchActivity extends ActionBarActivity {
         searchKey = et_search.getText().toString();
         if (searchKey != null && searchKey.trim().length() > 0) {
             bookLineItems = new ArrayList<BookLineItem>();
-            final ParseUser user = ParseUser.getCurrentUser();
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Locker");
             query.include("lockerPointer");
+            query.include("userPointer");
+            query.orderByDescending("updatedAt");
             query.whereContains("title", searchKey);
             query.findInBackground(new FindCallback<ParseObject>() {
                 public void done(List<ParseObject> lockerList, ParseException e) {
@@ -93,9 +93,10 @@ public class SearchActivity extends ActionBarActivity {
                                 bookLineItem.setAuthor(parseObject.getString("author"));
                                 bookLineItem.setImageUrl(parseObject.getString("smallimageurl"));
                                 bookLineItem.setTitle(parseObject.getString("title"));
-                                bookLineItem.setUsername(parseObject.getString(user.getUsername()));
+                                bookLineItem.setUsername(parseObject.getParseUser("userPointer").getUsername());
                                 bookLineItem.setAge(parseObject.getString("createdAt"));
                                 bookLineItem.setEan(parseObject.getString("ean"));
+                                bookLineItem.setParseBookObject(parseObject);
                                 bookLineItems.add(bookLineItem);
                             }
                             lineItemAdapter.setBookLineItemList(bookLineItems);

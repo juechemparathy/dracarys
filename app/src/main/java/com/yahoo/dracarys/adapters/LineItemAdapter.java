@@ -1,6 +1,8 @@
 package com.yahoo.dracarys.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +16,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -87,6 +90,22 @@ public class LineItemAdapter extends RecyclerView.Adapter<LineItemAdapter.LineIt
             });
         }else{
             Log.d("DEBUG","No image Url "+current.getEan());
+        }
+
+//        ParseFile selfieFile  = ParseUser.getCurrentUser().getParseFile("selfie");
+        ParseFile selfieFile  = current.getParseBookObject().getParseUser("userPointer").getParseFile("selfie");
+        Bitmap selfie = null;
+        if(selfieFile!=null) {
+            try {
+                selfie = BitmapFactory.decodeByteArray(selfieFile.getData(), 0, selfieFile.getData().length);
+                if (selfie != null) {
+                    holder.iv_follow.setImageBitmap(selfie);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }else {
+            holder.iv_follow.setImageResource(R.drawable.book_profile);
         }
     }
 

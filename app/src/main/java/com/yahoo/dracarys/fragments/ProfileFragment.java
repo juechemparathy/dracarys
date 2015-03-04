@@ -2,6 +2,8 @@ package com.yahoo.dracarys.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,10 +17,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -97,9 +99,20 @@ public class ProfileFragment extends Fragment implements OnFragmentInteractionLi
         tvName.setText(user.getUsername());
         tvTagLine.setText((String) user.get("tagline"));
 
-        //find an image
-//        ivProfileImage.setImageBitmap();
-        //
+        ParseFile selfieFile  = user.getParseFile("selfie");
+        Bitmap selfie = null;
+        if(selfieFile!=null) {
+            try {
+                selfie = BitmapFactory.decodeByteArray(selfieFile.getData(), 0, selfieFile.getData().length);
+                if (selfie != null) {
+                    ivProfileImage.setImageBitmap(selfie);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }else {
+            ivProfileImage.setImageResource(R.drawable.book_profile);
+        }
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Locker");
         query.whereEqualTo("userObjId", user.getObjectId());
@@ -116,24 +129,6 @@ public class ProfileFragment extends Fragment implements OnFragmentInteractionLi
                 }
             }
         });
-
-        if (imageUrl != null) {
-            imageLoader.get(imageUrl, new ImageLoader.ImageListener() {
-                @Override
-                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                    ivProfileImage.setImageBitmap(response.getBitmap());
-
-                }
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    //fall back to default image
-                }
-            });
-        } else {
-            ivProfileImage.setImageResource(R.drawable.book_profile);
-        }
-
 
         query = ParseQuery.getQuery("Follower");
         query.whereEqualTo("follower", ParseUser.getCurrentUser());

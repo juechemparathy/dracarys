@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.yahoo.dracarys.R;
 
@@ -142,6 +143,8 @@ public class CameraFragment extends Fragment {
                             Toast.LENGTH_LONG).show();
                 } else {
                     //Add to user obj
+                    ParseUser.getCurrentUser().put("selfie",photoFile);
+                    ParseUser.getCurrentUser().saveEventually();
                     Toast.makeText(getActivity(),"Saving picture!",Toast.LENGTH_SHORT).show();
                     getActivity().finish();
                 }

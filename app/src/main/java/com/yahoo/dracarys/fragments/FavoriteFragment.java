@@ -91,10 +91,10 @@ public class FavoriteFragment extends Fragment implements OnFragmentInteractionL
                             bookLineItem.setAuthor(lockerObj.getString("author"));
                             bookLineItem.setImageUrl(lockerObj.getString("smallimageurl"));
                             bookLineItem.setTitle(lockerObj.getString("title"));
-                            ParseObject userObject = lockerObj.getParseObject("userPointer");
-                            bookLineItem.setUsername(userObject.getString("username"));
+                            bookLineItem.setUsername(parseObject.getParseUser("userPointer").getUsername());
                             bookLineItem.setAge(lockerObj.getString("createdAt"));
                             bookLineItem.setEan(lockerObj.getString("ean"));
+                            bookLineItem.setParseBookObject(parseObject);
                             bookLineItems.add(bookLineItem);
                         }
                         lineItemAdapter.notifyDataSetChanged();

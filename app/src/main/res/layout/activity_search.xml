@@ -15,6 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/et_search"
+        android:hint="I'm Feeling Lucky"
         android:layout_below="@+id/app_bar"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -37,12 +38,13 @@
 
     <Button
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Search Library"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:id="@+id/bt_search"
         android:onClick="searchLibrary"
         android:layout_alignTop="@+id/et_search"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/book_search_eye"
+        />
 </RelativeLayout>

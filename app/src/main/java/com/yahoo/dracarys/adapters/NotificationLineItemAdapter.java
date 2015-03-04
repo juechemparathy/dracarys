@@ -1,6 +1,8 @@
 package com.yahoo.dracarys.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,8 @@ import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
+import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.yahoo.dracarys.R;
 import com.yahoo.dracarys.helpers.VolleySingleton;
 import com.yahoo.dracarys.models.BookLineItem;
@@ -70,6 +74,21 @@ public class NotificationLineItemAdapter extends RecyclerView.Adapter<Notificati
                 }
             });
         }
+
+        ParseFile selfieFile  = current.getParseBookObject().getParseUser("userPointer").getParseFile("selfie");
+        Bitmap selfie = null;
+        if(selfieFile!=null) {
+            try {
+                selfie = BitmapFactory.decodeByteArray(selfieFile.getData(), 0, selfieFile.getData().length);
+                if (selfie != null) {
+                    holder.iv_follow.setImageBitmap(selfie);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }else {
+            holder.iv_follow.setImageResource(R.drawable.book_profile);
+        }
     }
 
     @Override
@@ -87,6 +106,8 @@ public class NotificationLineItemAdapter extends RecyclerView.Adapter<Notificati
         TextView username;
         TextView author;
         TextView age;
+        ImageView iv_follow;
+
 
         public LineItemViewHolder(final View itemView) {
             super(itemView);
@@ -97,6 +118,7 @@ public class NotificationLineItemAdapter extends RecyclerView.Adapter<Notificati
             icon = (ImageView) itemView.findViewById(R.id.iv_drawer);
             addtomine = (ImageView) itemView.findViewById(R.id.iv_addtomine);
             requestLoan = (ImageView) itemView.findViewById(R.id.iv_requestLoan);
+            iv_follow = (ImageView) itemView.findViewById(R.id.iv_follow);
 
             icon.setOnClickListener(this);
             title.setOnClickListener(this);
