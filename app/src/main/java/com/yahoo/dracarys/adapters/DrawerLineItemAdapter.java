@@ -15,6 +15,7 @@ import com.parse.ParseUser;
 import com.yahoo.dracarys.R;
 import com.yahoo.dracarys.activities.AddActivity;
 import com.yahoo.dracarys.activities.LoginActivity;
+import com.yahoo.dracarys.activities.MainActivity;
 import com.yahoo.dracarys.activities.SearchActivity;
 import com.yahoo.dracarys.models.DrawerLineItem;
 
@@ -75,10 +76,29 @@ public class DrawerLineItemAdapter extends RecyclerView.Adapter<DrawerLineItemAd
             int position = getPosition();
             //Handle this more elegantly
             if (position == 0) {
+
+            }else if (position == 1) {
+                //Search
                 context.startActivity(new Intent(context, SearchActivity.class));
-            }if (position == 1) {
+            }else if (position == 2) {
+                //Public Stream
+                context.startActivity(new Intent(context, MainActivity.class));
+            }else if (position == 3) {
+                //Private Stream
+                context.startActivity(new Intent(context, MainActivity.class));
+            }else if (position == 4) {
+                //Favorites
+                context.startActivity(new Intent(context, MainActivity.class));
+            }else if (position == 5) {
+                //My Profile
+                context.startActivity(new Intent(context, MainActivity.class));
+            }else if (position == 6) {
+                //Add ISBN
                 context.startActivity(new Intent(context, AddActivity.class));
-            }if(position ==6){
+            }else if (position == 7) {
+                //Scan ISBN
+                context.startActivity(new Intent(context, AddActivity.class));
+            }else if(position ==8){
                 ParseUser.logOut();
                 Intent i = new Intent(context, LoginActivity.class);
                  //Was trying to remove the call stack on logout.- Ended up back button with ablack screen.
@@ -86,7 +106,7 @@ public class DrawerLineItemAdapter extends RecyclerView.Adapter<DrawerLineItemAd
                 context.startActivity(i);
             }
             else {
-                Toast.makeText(context, "Clicked on position " + position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Damn, YBook!" + position, Toast.LENGTH_SHORT).show();
             }
         }
     }

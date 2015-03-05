@@ -1,5 +1,6 @@
 package com.yahoo.dracarys.data;
 
+import com.parse.ParseUser;
 import com.yahoo.dracarys.R;
 import com.yahoo.dracarys.models.DrawerLineItem;
 
@@ -17,13 +18,27 @@ public class DrawerData {
             data = new ArrayList();
 
             DrawerLineItem lineItem = new DrawerLineItem();
+            lineItem.setTitle("¯\\_(ツ)_/¯   Hi "+ ParseUser.getCurrentUser().getUsername());
+            data.add(lineItem);
+
+            lineItem = new DrawerLineItem();
             lineItem.setIconId(R.drawable.book_search);
-            lineItem.setTitle("Search Books");
+            lineItem.setTitle("Search");
             data.add(lineItem);
 
             lineItem = new DrawerLineItem();
             lineItem.setIconId(R.drawable.book_stack);
-            lineItem.setTitle("Timeline");
+            lineItem.setTitle("Public Stream");
+            data.add(lineItem);
+
+            lineItem = new DrawerLineItem();
+            lineItem.setIconId(R.drawable.book_single);
+            lineItem.setTitle("Private Stream");
+            data.add(lineItem);
+
+            lineItem = new DrawerLineItem();
+            lineItem.setIconId(R.drawable.book_bookmark);
+            lineItem.setTitle("My Favorites");
             data.add(lineItem);
 
             lineItem = new DrawerLineItem();
@@ -32,13 +47,8 @@ public class DrawerData {
             data.add(lineItem);
 
             lineItem = new DrawerLineItem();
-            lineItem.setIconId(R.drawable.book_bookmark);
-            lineItem.setTitle("Notifications");
-            data.add(lineItem);
-
-            lineItem = new DrawerLineItem();
-            lineItem.setIconId(R.drawable.book_star_filled);
-            lineItem.setTitle("Favorites");
+            lineItem.setIconId(R.drawable.book_text_add);
+            lineItem.setTitle("Enter ISBN");
             data.add(lineItem);
 
             lineItem = new DrawerLineItem();
