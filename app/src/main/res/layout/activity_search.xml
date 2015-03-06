@@ -38,13 +38,15 @@
 
     <Button
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:paddingRight="20dp"
+        android:paddingLeft="20dp"
         android:id="@+id/bt_search"
         android:onClick="searchLibrary"
         android:layout_alignTop="@+id/et_search"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:background="@drawable/book_search_eye"
+        android:background="@drawable/book_search"
         />
 </RelativeLayout>

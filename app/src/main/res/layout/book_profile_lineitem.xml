@@ -80,7 +80,7 @@
             android:paddingLeft="30dp"
             android:paddingRight="0dp"
             android:id="@+id/iv_lend_accept_reject"
-            android:src="@drawable/book_lend_accept_reject"
+            android:src="@drawable/book_public"
             android:layout_alignParentBottom="true"
             />
 

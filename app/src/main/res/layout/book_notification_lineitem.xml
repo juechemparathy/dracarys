@@ -65,7 +65,7 @@
         android:layout_below="@+id/tv_title"
         android:layout_centerVertical="true"
         android:orientation="horizontal"
-        android:padding="0dp"
+        android:paddingRight="40dp"
         android:paddingLeft="30dp"
         android:paddingBottom="5dp"
         android:paddingTop="5dp">

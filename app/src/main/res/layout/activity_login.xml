@@ -57,7 +57,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:onClick="onLogin"
-        android:background="@drawable/book_login_handpointer"
+        android:background="@drawable/book_login"
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/et_username"
         android:layout_alignEnd="@+id/et_username" />
