@@ -33,7 +33,6 @@ public class AddActivity extends ActionBarActivity{
     Map<String,String> productResult;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

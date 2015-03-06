@@ -220,6 +220,8 @@ public class LineItemAdapter extends RecyclerView.Adapter<LineItemAdapter.LineIt
                                                 lockerItem.put("smallimageurl", bookLineItem.getImageUrl());
                                                 lockerItem.put("author", bookLineItem.getAuthor());
                                                 lockerItem.put("userPointer", ParseUser.getCurrentUser());
+                                                lockerItem.put("state",1);
+                                                lockerItem.put("displaystate",1);
                                                 lockerItem.saveInBackground();
 
                                                 //change the star

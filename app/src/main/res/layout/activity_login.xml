@@ -54,8 +54,8 @@
 
     <Button
         android:id="@+id/bt_login"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:onClick="onLogin"
         android:background="@drawable/book_login"
         android:layout_alignParentTop="true"
