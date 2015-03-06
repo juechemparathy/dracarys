@@ -12,14 +12,6 @@ import java.util.Map;
 
 public class AmazonFetcher {
 
-
-    public static void main(String args[]) throws  Exception{
-        searchAmazon("9781783983285", "", "");
-        searchAmazon("9781430264484", "", "");
-        searchAmazon("9781937785734", "", "");
-    }
-
-
 	static public Map<String,String> searchAmazon(String mIsbn, String mAuthor, String mTitle) {
 
 		String path = "http://theagiledirector.com/getRest_v3.php";
@@ -46,12 +38,24 @@ public class AmazonFetcher {
 
     public static Map<String,String>  parseXMLInput(String  stream){
         Map<String,String> result= new HashMap<String,String>();
-        String ean = stream.substring(stream.indexOf("<EAN>")+5, stream.indexOf("</EAN>"));
-        String title = stream.substring(stream.indexOf("<Title>")+7, stream.indexOf("</Title>"));
-        String author = stream.substring(stream.indexOf("<Author>")+8, stream.indexOf("</Author>"));
-        String content = stream.substring(stream.indexOf("<Content>")+9, stream.indexOf("</Content>"));
-        int smallImageString = stream.indexOf("<SmallImage>");
-        String smallImageUrl = stream.substring(stream.indexOf("<URL>",smallImageString)+5, stream.indexOf("</URL>",smallImageString));
+        String ean="";
+        String title="";
+        String author="";
+        String smallImageUrl="";
+        if(stream.indexOf("<EAN>")!=-1) {
+             ean = stream.substring(stream.indexOf("<EAN>") + 5, stream.indexOf("</EAN>"));
+        }
+        if(stream.indexOf("<Title>")!=-1) {
+            title = stream.substring(stream.indexOf("<Title>") + 7, stream.indexOf("</Title>"));
+        }
+        if(stream.indexOf("<Author>")!=-1) {
+            author = stream.substring(stream.indexOf("<Author>") + 8, stream.indexOf("</Author>"));
+        }
+//        String content = stream.substring(stream.indexOf("<Content>")+9, stream.indexOf("</Content>"));
+        int smallImageString = stream.indexOf("<MediumImage>");
+        if(smallImageString>0) {
+            smallImageUrl = stream.substring(stream.indexOf("<URL>", smallImageString) + 5, stream.indexOf("</URL>", smallImageString));
+        }
         result.put("ean",ean);
         result.put("title",title);
         result.put("author",author);

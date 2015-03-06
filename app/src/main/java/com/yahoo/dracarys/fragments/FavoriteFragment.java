@@ -18,7 +18,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.yahoo.dracarys.R;
-import com.yahoo.dracarys.adapters.NotificationLineItemAdapter;
+import com.yahoo.dracarys.adapters.FavoriteLineItemAdapter;
 import com.yahoo.dracarys.interfaces.OnFragmentInteractionListener;
 import com.yahoo.dracarys.models.BookLineItem;
 
@@ -35,7 +35,7 @@ public class FavoriteFragment extends Fragment implements OnFragmentInteractionL
     private OnFragmentInteractionListener mListener;
 
     private RecyclerView recyclerView;
-    private NotificationLineItemAdapter lineItemAdapter;
+    private FavoriteLineItemAdapter lineItemAdapter;
     List<BookLineItem> bookLineItems;
 
     /**
@@ -106,7 +106,7 @@ public class FavoriteFragment extends Fragment implements OnFragmentInteractionL
         }
 
         recyclerView = (RecyclerView) layout.findViewById(R.id.notification_timeline_rcview);
-        lineItemAdapter = new NotificationLineItemAdapter(getActivity(), bookLineItems);
+        lineItemAdapter = new FavoriteLineItemAdapter(getActivity(), bookLineItems);
         recyclerView.setAdapter(lineItemAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 

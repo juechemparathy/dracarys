@@ -93,6 +93,8 @@ public class PersonalTimelineFragment extends Fragment implements OnFragmentInte
                         ParseQuery<ParseObject> query = ParseQuery.getQuery("Locker");
                         query.orderByDescending("updatedAt");
                         query.setLimit(100);
+                        query.whereEqualTo("state", 1);
+                        query.whereEqualTo("displaystate", 1);
                         query.whereContainedIn("userPointer", userList);
                         query.include("userPointer");
                         query.findInBackground(new FindCallback<ParseObject>() {
@@ -105,6 +107,8 @@ public class PersonalTimelineFragment extends Fragment implements OnFragmentInte
                                         bookLineItem.setImageUrl(parseObject.getString("smallimageurl"));
                                         bookLineItem.setTitle(parseObject.getString("title"));
                                         bookLineItem.setEan(parseObject.getString("ean"));
+                                        bookLineItem.setState(parseObject.getInt("state"));
+                                        bookLineItem.setDisplaystate(parseObject.getInt("displaystate"));
                                         bookLineItem.setUsername(parseObject.getParseUser("userPointer").getUsername());
                                         Date date = parseObject.getCreatedAt();
                                         bookLineItem.setAge(getAge(date));

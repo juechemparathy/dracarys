@@ -87,9 +87,12 @@ public class AddActivity extends ActionBarActivity{
                 ParseObject lockerItem = new ParseObject("Locker");
                 lockerItem.put("title", productResult.get("title"));
                 lockerItem.put("ean", productResult.get("ean"));
+                lockerItem.put("state", 1);
+                lockerItem.put("displaystate", 1);
                 lockerItem.put("smallimageurl", productResult.get("smallimageurl"));
                 lockerItem.put("author", productResult.get("author"));
                 lockerItem.put("userPointer",ParseUser.getCurrentUser());
+
 
 
                 //Set the default flags

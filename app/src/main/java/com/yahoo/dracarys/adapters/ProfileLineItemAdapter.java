@@ -1,20 +1,19 @@
 package com.yahoo.dracarys.adapters;
 
-import android.app.Activity;
-import android.app.FragmentManager;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
+import com.parse.ParseObject;
 import com.yahoo.dracarys.R;
-import com.yahoo.dracarys.fragments.LendActionFragment;
 import com.yahoo.dracarys.helpers.VolleySingleton;
 import com.yahoo.dracarys.models.BookLineItem;
 
@@ -31,6 +30,8 @@ public class ProfileLineItemAdapter extends RecyclerView.Adapter<ProfileLineItem
     private Context context;
     VolleySingleton volleySingleton;
     ImageLoader imageLoader;
+    AlertDialog.Builder builder;
+
 
     public ProfileLineItemAdapter(Context context, List<BookLineItem> data) {
         this.context = context;
@@ -38,11 +39,13 @@ public class ProfileLineItemAdapter extends RecyclerView.Adapter<ProfileLineItem
         this.data = data;
         volleySingleton = VolleySingleton.getInstance();
         imageLoader = volleySingleton.getImageLoader();
+        builder = new AlertDialog.Builder(context);
+
     }
 
-    public void setBookLineItemList(List<BookLineItem> data){
-        this.data=data;
-        notifyItemRangeChanged(0,data.size());
+    public void setBookLineItemList(List<BookLineItem> data) {
+        this.data = data;
+        notifyItemRangeChanged(0, data.size());
     }
 
     @Override
@@ -60,8 +63,8 @@ public class ProfileLineItemAdapter extends RecyclerView.Adapter<ProfileLineItem
         holder.username.setText(current.getUsername());
         holder.author.setText(current.getAuthor());
         holder.age.setText(current.getAge());
-        if(current.getImageUrl()!=null){
-            imageLoader.get(current.getImageUrl(),new ImageLoader.ImageListener() {
+        if (current.getImageUrl() != null) {
+            imageLoader.get(current.getImageUrl(), new ImageLoader.ImageListener() {
                 @Override
                 public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
                     holder.icon.setImageBitmap(response.getBitmap());
@@ -72,6 +75,11 @@ public class ProfileLineItemAdapter extends RecyclerView.Adapter<ProfileLineItem
                     //fall back to default image
                 }
             });
+        }
+        if(current.getState()==0){
+            holder.lend.setImageResource(R.drawable.book_private);
+        }else{
+            holder.lend.setImageResource(R.drawable.book_public);
         }
     }
 
@@ -103,13 +111,48 @@ public class ProfileLineItemAdapter extends RecyclerView.Adapter<ProfileLineItem
             icon.setOnClickListener(this);
             title.setOnClickListener(this);
             username.setOnClickListener(this);
+
+
             lend.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+////                    LendActionFragment fragment = new LendActionFragment();
+////                    fragment.setBookLineItem(data.get(getPosition()));
+////                    FragmentManager fm = ((Activity)context).getFragmentManager();
+////                    fragment.show(fm,"Lend Action");
+//
+//                    //Update book status - state and displaystate
+//
+//
+//                }
+
                 @Override
                 public void onClick(View view) {
-                    LendActionFragment fragment = new LendActionFragment();
-                    fragment.setBookLineItem(data.get(getPosition()));
-                    FragmentManager fm = ((Activity)context).getFragmentManager();
-                    fragment.show(fm,"Lend Action");
+                    final BookLineItem bookLineItem = data.get(getPosition());
+                    final ParseObject lockerObj = bookLineItem.getParseBookObject();
+                    builder.setTitle("Update status");
+                    builder.setMessage(bookLineItem.getTitle());
+                    builder.setCancelable(true)
+                            .setPositiveButton("Private", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    lockerObj.put("state", 0);
+                                    lockerObj.saveInBackground();
+                                }
+                            })
+                            .setNegativeButton("Public", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    lockerObj.put("state", 1);
+                                    lockerObj.saveInBackground();
+                                }
+                            })
+                            .setNeutralButton("Delete", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    lockerObj.put("displaystate", 0);
+                                    lockerObj.saveInBackground();
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
                 }
             });
         }
@@ -117,8 +160,8 @@ public class ProfileLineItemAdapter extends RecyclerView.Adapter<ProfileLineItem
         @Override
         public void onClick(View view) {
             int position = getPosition();
-            if(view == icon){
-                Toast.makeText(context, "Position - " + position, Toast.LENGTH_SHORT).show();
+            if (view == icon) {
+               // Toast.makeText(context, "Position - " + position, Toast.LENGTH_SHORT).show();
             }
         }
     }

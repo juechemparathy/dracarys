@@ -57,7 +57,7 @@ public class DrawerData {
             data.add(lineItem);
 
             lineItem = new DrawerLineItem();
-            lineItem.setIconId(R.drawable.book_profile);
+            lineItem.setIconId(R.drawable.book_logout);
             lineItem.setTitle("Logout");
             data.add(lineItem);
 

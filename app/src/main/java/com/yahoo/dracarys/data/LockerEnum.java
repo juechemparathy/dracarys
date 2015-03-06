@@ -41,11 +41,35 @@ public class LockerEnum {
     public static enum DisplayState {
         PRIVATE(0,"PRIVATE"),
         PUBLIC(1,"PUBLIC");
-
         private final int status;
         private final String name;
 
         DisplayState(final int status, final String name) {
+            this.status = status;
+            this.name = name;
+        }
+
+        public int getStatus() {
+            return status;
+        }
+        public String getName() { return name; }
+        private static  Map<Integer,DisplayState> enumMap = new HashMap<Integer, DisplayState>();
+        static {
+            for(DisplayState s : EnumSet.allOf(DisplayState.class))
+                enumMap.put(s.getStatus(), s);
+        }
+        public static DisplayState getStatus(int code){
+            return enumMap.get(code);
+        }
+    }
+
+    public static enum State {
+        PRIVATE(0,"INACTIVE"),
+        PUBLIC(1,"ACTIVE");
+        private final int status;
+        private final String name;
+
+        State(final int status, final String name) {
             this.status = status;
             this.name = name;
         }

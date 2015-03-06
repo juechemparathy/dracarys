@@ -81,6 +81,8 @@ public class TimelineFragment extends Fragment implements OnFragmentInteractionL
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Locker");
             query.orderByDescending("updatedAt");
             query.setLimit(100);
+            query.whereEqualTo("state", 1);
+            query.whereEqualTo("displaystate", 1);
             query.whereNotEqualTo("userPointer", user);
             query.include("userPointer");
             query.findInBackground(new FindCallback<ParseObject>() {
@@ -92,6 +94,8 @@ public class TimelineFragment extends Fragment implements OnFragmentInteractionL
                             bookLineItem.setAuthor(parseObject.getString("author"));
                             bookLineItem.setImageUrl(parseObject.getString("smallimageurl"));
                             bookLineItem.setTitle(parseObject.getString("title"));
+                            bookLineItem.setState(parseObject.getInt("state"));
+                            bookLineItem.setDisplaystate(parseObject.getInt("displaystate"));
                             bookLineItem.setEan(parseObject.getString("ean"));
                             bookLineItem.setUsername(parseObject.getParseUser("userPointer").getUsername());
                             Date date =  parseObject.getCreatedAt();

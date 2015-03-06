@@ -16,7 +16,24 @@ public class BookLineItem {
     private int star;
     private String ean;
     private ParseObject parseBookObject;
+    private int state;
+    private int displaystate;
 
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
+
+    public int getDisplaystate() {
+        return displaystate;
+    }
+
+    public void setDisplaystate(int displaystate) {
+        this.displaystate = displaystate;
+    }
 
     public ParseObject getParseBookObject() {
         return parseBookObject;

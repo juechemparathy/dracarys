@@ -160,7 +160,7 @@ public class ProfileFragment extends Fragment implements OnFragmentInteractionLi
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> followingList, ParseException e) {
                 if (e == null) {
-                    tvLendRequests.setText(followingList.size() + " active loans");
+                    tvLendRequests.setText(followingList.size() + " share requests");
                 } else {
                     Log.d("LOCKER", "Error: " + e.getMessage());
                 }
@@ -200,6 +200,7 @@ public class ProfileFragment extends Fragment implements OnFragmentInteractionLi
             bookLineItems = new ArrayList<BookLineItem>();
             final ParseUser user = ParseUser.getCurrentUser();
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Locker");
+            query.whereEqualTo("displaystate", 1);
             query.whereEqualTo("userPointer", user);
             query.findInBackground(new FindCallback<ParseObject>() {
                 public void done(List<ParseObject> lockerList, ParseException e) {
@@ -213,6 +214,8 @@ public class ProfileFragment extends Fragment implements OnFragmentInteractionLi
                             bookLineItem.setUsername(parseObject.getParseUser("userPointer").getUsername());
                             bookLineItem.setAge(parseObject.getString("createdAt"));
                             bookLineItem.setEan(parseObject.getString("ean"));
+                            bookLineItem.setState(parseObject.getInt("state"));
+                            bookLineItem.setDisplaystate(parseObject.getInt("displaystate"));
                             bookLineItem.setParseBookObject(parseObject);
                             bookLineItems.add(bookLineItem);
                             lineItemAdapter.notifyDataSetChanged();
