@@ -113,8 +113,13 @@ public class AddActivity extends ActionBarActivity{
     public void onManualRequest(View view) {
         //Invoke manual enrty activity
         String code =  etProductCode.getText().toString();
-        Toast.makeText(this, "Manual: "+ code, Toast.LENGTH_SHORT).show();
-        createLockerItem(code);
+        if(code==null || code.trim().length()==0){
+            Toast.makeText(this, "Enter a valid ISBN code"+ code, Toast.LENGTH_SHORT).show();
+        }else{
+            createLockerItem(code);
+            Toast.makeText(this, "Added to your locker"+ code, Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @Override
@@ -132,9 +137,6 @@ public class AddActivity extends ActionBarActivity{
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }

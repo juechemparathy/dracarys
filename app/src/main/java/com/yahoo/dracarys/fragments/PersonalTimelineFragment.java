@@ -1,9 +1,11 @@
 package com.yahoo.dracarys.fragments;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -37,6 +39,7 @@ public class PersonalTimelineFragment extends Fragment implements OnFragmentInte
     private RecyclerView recyclerView;
     private LineItemAdapter lineItemAdapter;
     List<BookLineItem> bookLineItems;
+    SwipeRefreshLayout refreshLayout;
 
 
     /**
@@ -70,6 +73,7 @@ public class PersonalTimelineFragment extends Fragment implements OnFragmentInte
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View layout = inflater.inflate(R.layout.fragment_personal_timeline, container, false);
+        refreshLayout = (SwipeRefreshLayout)layout.findViewById(R.id.swipe_personal_container);
         Bundle bundle = getArguments();
         if (bundle != null) {
 //            tvPagePosition.setText("Page " +bundle.getInt("position"));
@@ -78,7 +82,6 @@ public class PersonalTimelineFragment extends Fragment implements OnFragmentInte
 
         if(bookLineItems==null) {
             bookLineItems = new ArrayList<BookLineItem>();
-
             ParseQuery query = ParseQuery.getQuery("Follower");
             query.whereEqualTo("following", ParseUser.getCurrentUser());
             query.whereEqualTo("status", "A");
@@ -126,18 +129,94 @@ public class PersonalTimelineFragment extends Fragment implements OnFragmentInte
                     }
                 }
             });
-
-
         }
 
         recyclerView = (RecyclerView) layout.findViewById(R.id.timeline_rcview);
         lineItemAdapter = new LineItemAdapter(getActivity(), bookLineItems);
         recyclerView.setAdapter(lineItemAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                System.out.println(dx + " - "+dy +"  " + refreshLayout.canChildScrollUp());
+                if (recyclerView.canScrollVertically(1))
+                    refreshLayout.setEnabled(true);
+                else
+                    refreshLayout.setEnabled(false);
+            }
+        });
+
 
         lineItemAdapter.notifyDataSetChanged();
         return layout;
     }
+
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                bookLineItems = new ArrayList<BookLineItem>();
+                ParseQuery query = ParseQuery.getQuery("Follower");
+                query.whereEqualTo("following", ParseUser.getCurrentUser());
+                query.whereEqualTo("status", "A");
+                query.findInBackground(new FindCallback<ParseObject>() {
+                    public void done(List<ParseObject> followerList, ParseException e) {
+                        List<ParseObject> userList = new ArrayList<ParseObject>();
+                        for (ParseObject p : followerList) {
+                            userList.add(p.getParseObject("follower"));
+                        }
+
+                        if (e == null) {
+                            ParseQuery<ParseObject> query = ParseQuery.getQuery("Locker");
+                            query.orderByDescending("updatedAt");
+                            query.setLimit(100);
+                            query.whereEqualTo("state", 1);
+                            query.whereEqualTo("displaystate", 1);
+                            query.whereContainedIn("userPointer", userList);
+                            query.include("userPointer");
+                            query.findInBackground(new FindCallback<ParseObject>() {
+                                public void done(List<ParseObject> lockerList, ParseException e) {
+                                    if (e == null) {
+                                        Log.d("LOCKER", "Retrieved " + lockerList.size() + " items");
+                                        for (ParseObject parseObject : lockerList) {
+                                            BookLineItem bookLineItem = new BookLineItem();
+                                            bookLineItem.setAuthor(parseObject.getString("author"));
+                                            bookLineItem.setImageUrl(parseObject.getString("smallimageurl"));
+                                            bookLineItem.setTitle(parseObject.getString("title"));
+                                            bookLineItem.setEan(parseObject.getString("ean"));
+                                            bookLineItem.setState(parseObject.getInt("state"));
+                                            bookLineItem.setDisplaystate(parseObject.getInt("displaystate"));
+                                            bookLineItem.setUsername(parseObject.getParseUser("userPointer").getUsername());
+                                            Date date = parseObject.getCreatedAt();
+                                            bookLineItem.setAge(getAge(date));
+                                            bookLineItem.setParseBookObject(parseObject);
+                                            bookLineItems.add(bookLineItem);
+                                            lineItemAdapter.notifyDataSetChanged();
+
+                                            refreshLayout.setRefreshing(false);
+                                        }
+                                    } else {
+                                        Log.d("LOCKER", "Error: " + e.getMessage());
+                                    }
+                                }
+                            });
+                        } else {
+                            Log.d("LOCKER", "Error: " + e.getMessage());
+                        }
+                    }
+                });
+            }
+        });
+        refreshLayout.setColorSchemeColors(Color.BLACK, Color.GRAY);
+    }
+
 
     public String getAge(Date date) {
         //add logic for converting to expected format

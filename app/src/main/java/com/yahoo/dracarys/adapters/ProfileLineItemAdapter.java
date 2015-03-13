@@ -145,10 +145,9 @@ public class ProfileLineItemAdapter extends RecyclerView.Adapter<ProfileLineItem
                                     lockerObj.saveInBackground();
                                 }
                             })
-                            .setNeutralButton("Delete", new DialogInterface.OnClickListener() {
+                            .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    lockerObj.put("displaystate", 0);
-                                    lockerObj.saveInBackground();
+                                    dialog.cancel();
                                 }
                             });
                     AlertDialog alert = builder.create();

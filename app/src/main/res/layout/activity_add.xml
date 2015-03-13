@@ -39,7 +39,7 @@ tools:context="com.yahoo.dracarys.activities.AddActivity"
         android:layout_toRightOf="@+id/et_add_isbn" />
 
 
-    <ImageButton
+    <ImageView
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:id="@+id/iv_add_isbn_scan"
@@ -48,12 +48,6 @@ tools:context="com.yahoo.dracarys.activities.AddActivity"
         android:onClick="onScannerRequest"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView"
-        android:layout_gravity="center_horizontal" />
 
     <TextView
         android:layout_width="wrap_content"

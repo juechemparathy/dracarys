@@ -24,8 +24,8 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
 
     Context context;
 
-    String[] tabTitles = {"Timeline", "Notifications", "MyProfile"};
-    int icons[] = {R.drawable.book_stack,R.drawable.book_single, R.drawable.book_bookmark, R.drawable.book_profile};
+    String[] tabTitles = {"Private Timeline", "Notifications", "MyProfile","Public Timeline"};
+    int icons[] = {R.drawable.book_private_channel, R.drawable.book_fav_bar, R.drawable.book_profile,R.drawable.book_public_channel};
 
     public MainPagerAdapter(FragmentManager fm,Context c) {
         super(fm);
@@ -35,17 +35,17 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if(position==0) {
-            TimelineFragment timelineFragment = TimelineFragment.newInstance(position);
-            return timelineFragment;
-        }else if(position==1) {
             PersonalTimelineFragment personalTimelineFragment = PersonalTimelineFragment.newInstance(position);
             return personalTimelineFragment;
         }
-        else if(position == 2){
+        else if(position == 1){
             FavoriteFragment favoriteFragment = new FavoriteFragment();
             return favoriteFragment;
-        }else{
+        }else if(position == 2){
             return new ProfileFragment();
+        }else{
+            TimelineFragment timelineFragment = TimelineFragment.newInstance(position);
+            return timelineFragment;
         }
     }
 

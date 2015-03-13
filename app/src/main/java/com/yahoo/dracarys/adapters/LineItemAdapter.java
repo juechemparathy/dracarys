@@ -73,7 +73,7 @@ public class LineItemAdapter extends RecyclerView.Adapter<LineItemAdapter.LineIt
         holder.author.setText(current.getAuthor());
         holder.age.setText(current.getAge());
         if (current.getStar() == 0) {
-            holder.star.setImageResource(R.drawable.book_star_empty);
+            holder.star.setImageResource(R.drawable.book_fav_plus);
         } else {
             holder.star.setImageResource(R.drawable.book_star_filled);
         }
@@ -149,6 +149,7 @@ public class LineItemAdapter extends RecyclerView.Adapter<LineItemAdapter.LineIt
             star.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    builder= new AlertDialog.Builder(context);
                     final ParseUser user = ParseUser.getCurrentUser();
                     BookLineItem bookLineItem = data.get(getPosition());
                     final ParseObject bookObject = bookLineItem.getParseBookObject();
@@ -182,9 +183,15 @@ public class LineItemAdapter extends RecyclerView.Adapter<LineItemAdapter.LineIt
                                             } else {
                                                 Toast.makeText(context, "Already your favorite.", Toast.LENGTH_SHORT).show();
                                                 Log.d("score", "Retrieved " + dataList.size() + " scores");
-                                            }
+                                              }
                                         }
                                     });
+                                }
+                            });
+                    builder.setNegativeButton("Cancel",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
                                 }
                             });
                     AlertDialog alert = builder.create();
@@ -196,6 +203,7 @@ public class LineItemAdapter extends RecyclerView.Adapter<LineItemAdapter.LineIt
             addtomine.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    builder= new AlertDialog.Builder(context);
                     final BookLineItem bookLineItem = data.get(getPosition());
                     final ParseObject bookObject = bookLineItem.getParseBookObject();
                     builder.setTitle("Add to my library");
@@ -220,8 +228,8 @@ public class LineItemAdapter extends RecyclerView.Adapter<LineItemAdapter.LineIt
                                                 lockerItem.put("smallimageurl", bookLineItem.getImageUrl());
                                                 lockerItem.put("author", bookLineItem.getAuthor());
                                                 lockerItem.put("userPointer", ParseUser.getCurrentUser());
-                                                lockerItem.put("state",1);
-                                                lockerItem.put("displaystate",1);
+                                                lockerItem.put("state", 1);
+                                                lockerItem.put("displaystate", 1);
                                                 lockerItem.saveInBackground();
 
                                                 //change the star
@@ -237,6 +245,12 @@ public class LineItemAdapter extends RecyclerView.Adapter<LineItemAdapter.LineIt
                                     });
                                 }
                             });
+                    builder.setNegativeButton("Cancel",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
                     AlertDialog alert = builder.create();
                     alert.show();
                 }
@@ -245,6 +259,8 @@ public class LineItemAdapter extends RecyclerView.Adapter<LineItemAdapter.LineIt
             requestLoan.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    builder= new AlertDialog.Builder(context);
+
                     final ParseUser lendeePointer = ParseUser.getCurrentUser();
                     final BookLineItem bookLineItem = data.get(getPosition());
                     final ParseUser lenderPointer = bookLineItem.getParseBookObject().getParseUser("userPointer");
@@ -281,6 +297,12 @@ public class LineItemAdapter extends RecyclerView.Adapter<LineItemAdapter.LineIt
                                     });
                                 }
                             });
+                    builder.setNegativeButton("Cancel",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
                     AlertDialog alert = builder.create();
                     alert.show();
                 }
@@ -289,6 +311,8 @@ public class LineItemAdapter extends RecyclerView.Adapter<LineItemAdapter.LineIt
             iv_follow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    builder= new AlertDialog.Builder(context);
+
                     final ParseUser followerPointer = ParseUser.getCurrentUser();
                     final BookLineItem bookLineItem = data.get(getPosition());
                     final ParseUser userPointer = bookLineItem.getParseBookObject().getParseUser("userPointer");
@@ -321,11 +345,17 @@ public class LineItemAdapter extends RecyclerView.Adapter<LineItemAdapter.LineIt
                                     });
                                 }
                             })
-                            .setNegativeButton("View Profile", new DialogInterface.OnClickListener() {
+                            .setNeutralButton("View Profile", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     dialog.cancel();
                                 }
-                            });
+                            })
+                            .setNegativeButton("Cancel",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.cancel();
+                                        }
+                                    });
                     AlertDialog alert = builder.create();
                     alert.show();
                 }

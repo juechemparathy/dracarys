@@ -66,11 +66,6 @@ public class SearchActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -88,17 +83,24 @@ public class SearchActivity extends ActionBarActivity {
                     if (e == null) {
                         if(lockerList.size()>0) {
                             Log.d("SEARCH", "Retrieved " + lockerList.size() + " items");
-                            for (ParseObject parseObject : lockerList) {
-                                BookLineItem bookLineItem = new BookLineItem();
-                                bookLineItem.setAuthor(parseObject.getString("author"));
-                                bookLineItem.setImageUrl(parseObject.getString("smallimageurl"));
-                                bookLineItem.setTitle(parseObject.getString("title"));
-                                bookLineItem.setUsername(parseObject.getParseUser("userPointer").getUsername());
-                                bookLineItem.setAge(parseObject.getString("createdAt"));
-                                bookLineItem.setEan(parseObject.getString("ean"));
-                                bookLineItem.setParseBookObject(parseObject);
-                                bookLineItems.add(bookLineItem);
-                            }
+
+                                for (ParseObject parseObject : lockerList) {
+                                    BookLineItem bookLineItem = new BookLineItem();
+                                    try {
+                                    bookLineItem.setAuthor(parseObject.getString("author"));
+                                    bookLineItem.setImageUrl(parseObject.getString("smallimageurl"));
+                                    bookLineItem.setTitle(parseObject.getString("title"));
+                                    bookLineItem.setUsername(parseObject.getParseUser("userPointer").getUsername());
+                                    bookLineItem.setAge(parseObject.getString("createdAt"));
+                                    bookLineItem.setEan(parseObject.getString("ean"));
+                                    bookLineItem.setParseBookObject(parseObject);
+                                    bookLineItems.add(bookLineItem);
+                                    }catch(Exception ex){
+                                        Log.d("DEBUG",bookLineItem.getEan());
+                                        ex.printStackTrace();
+                                    }
+                                }
+
                             lineItemAdapter.setBookLineItemList(bookLineItems);
                             lineItemAdapter.notifyDataSetChanged();
                         }else{

@@ -5,10 +5,17 @@
     tools:context="com.yahoo.dracarys.fragments.PersonalTimelineFragment"
     android:background="@drawable/appbar_wood">
 
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_personal_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
     <android.support.v7.widget.RecyclerView
         android:id="@+id/timeline_rcview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/appbar_wood">
     </android.support.v7.widget.RecyclerView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </FrameLayout>

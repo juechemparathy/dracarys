@@ -1,6 +1,8 @@
 package com.yahoo.dracarys.fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -97,7 +100,12 @@ public class ProfileFragment extends Fragment implements OnFragmentInteractionLi
         //2.User timeline info
         final ParseUser user = ParseUser.getCurrentUser();
         tvName.setText(user.getUsername());
-        tvTagLine.setText((String) user.get("tagline"));
+        String tagLine = (String) user.get("tagline");
+        if(tagLine == null || tagLine.trim().length()==0){
+            tvTagLine.setText("Tap here to edit your tagline!");
+        }else{
+            tvTagLine.setText(tagLine);
+        }
 
         ParseFile selfieFile  = user.getParseFile("selfie");
         Bitmap selfie = null;
@@ -191,6 +199,39 @@ public class ProfileFragment extends Fragment implements OnFragmentInteractionLi
 
         tvName = (TextView) layout.findViewById(R.id.tvName);
         tvTagLine = (TextView) layout.findViewById(R.id.tvTagLine);
+        tvTagLine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+
+                alert.setTitle("Edit Tagline");
+// Set an EditText view to get user input
+                final EditText input = new EditText(getActivity());
+                alert.setView(input);
+
+                alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        String value = input.getText().toString();
+                        // Do something with value!
+                        tvTagLine.setText(value);
+                        //save tagline
+                        ParseUser user = ParseUser.getCurrentUser();
+                        user.put("tagline",value);
+                        user.saveInBackground();
+                        dialog.cancel();
+                    }
+                });
+
+                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // Canceled.
+                    }
+                });
+                alert.show();
+            }
+        });
+
+
         tvFollowers = (TextView) layout.findViewById(R.id.tvFollowers);
         tvFollowing = (TextView) layout.findViewById(R.id.tvFollowing);
         tvLendRequests = (TextView) layout.findViewById(R.id.tvLendRequests);

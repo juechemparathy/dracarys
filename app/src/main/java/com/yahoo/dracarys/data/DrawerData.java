@@ -18,7 +18,7 @@ public class DrawerData {
             data = new ArrayList();
 
             DrawerLineItem lineItem = new DrawerLineItem();
-            lineItem.setTitle("¯\\_(ツ)_/¯   Hi "+ ParseUser.getCurrentUser().getUsername());
+            lineItem.setTitle("Hi "+ ParseUser.getCurrentUser().getUsername() + "!");
             data.add(lineItem);
 
             lineItem = new DrawerLineItem();
@@ -27,17 +27,17 @@ public class DrawerData {
             data.add(lineItem);
 
             lineItem = new DrawerLineItem();
-            lineItem.setIconId(R.drawable.book_stack);
+            lineItem.setIconId(R.drawable.book_public_channel);
             lineItem.setTitle("Public Stream");
             data.add(lineItem);
 
             lineItem = new DrawerLineItem();
-            lineItem.setIconId(R.drawable.book_single);
+            lineItem.setIconId(R.drawable.book_private_channel);
             lineItem.setTitle("Private Stream");
             data.add(lineItem);
 
             lineItem = new DrawerLineItem();
-            lineItem.setIconId(R.drawable.book_bookmark);
+            lineItem.setIconId(R.drawable.book_fav_bar);
             lineItem.setTitle("My Favorites");
             data.add(lineItem);
 

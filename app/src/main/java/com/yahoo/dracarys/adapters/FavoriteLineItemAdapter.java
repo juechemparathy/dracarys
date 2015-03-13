@@ -161,8 +161,8 @@ public class FavoriteLineItemAdapter extends RecyclerView.Adapter<FavoriteLineIt
                                                 lockerItem.put("smallimageurl", bookLineItem.getImageUrl());
                                                 lockerItem.put("author", bookLineItem.getAuthor());
                                                 lockerItem.put("userPointer", ParseUser.getCurrentUser());
-                                                lockerItem.put("state",1);
-                                                lockerItem.put("displaystate",1);
+                                                lockerItem.put("state", 1);
+                                                lockerItem.put("displaystate", 1);
                                                 lockerItem.saveInBackground();
 
                                                 //change the star
@@ -176,6 +176,11 @@ public class FavoriteLineItemAdapter extends RecyclerView.Adapter<FavoriteLineIt
 
                                         }
                                     });
+                                }
+                            })
+                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
                                 }
                             });
                     AlertDialog alert = builder.create();
@@ -221,7 +226,11 @@ public class FavoriteLineItemAdapter extends RecyclerView.Adapter<FavoriteLineIt
                                         }
                                     });
                                 }
-                            });
+                            }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
                     AlertDialog alert = builder.create();
                     alert.show();
                 }
@@ -266,7 +275,11 @@ public class FavoriteLineItemAdapter extends RecyclerView.Adapter<FavoriteLineIt
                                 public void onClick(DialogInterface dialog, int id) {
                                     dialog.cancel();
                                 }
-                            });
+                            }).setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                        }
+                    });
                     AlertDialog alert = builder.create();
                     alert.show();
                 }

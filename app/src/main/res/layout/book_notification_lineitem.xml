@@ -88,7 +88,7 @@
             android:layout_toStartOf="@+id/iv_addtomine"
             android:paddingLeft="30dp"
             android:paddingRight="0dp"
-            android:src="@drawable/book_text_settings" />
+            android:src="@drawable/book_email" />
 
         <ImageView
             android:id="@+id/iv_follow"
@@ -99,7 +99,8 @@
             android:layout_toStartOf="@+id/iv_requestLoan"
             android:paddingLeft="30dp"
             android:paddingRight="0dp"
-            android:src="@drawable/book_profile" />
+            android:src="@drawable/book_profile"
+            />
 
     </LinearLayout>
 

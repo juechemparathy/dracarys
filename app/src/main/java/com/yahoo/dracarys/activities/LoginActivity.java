@@ -24,6 +24,7 @@ public class LoginActivity extends ActionBarActivity {
     private EditText et_password;
     private EditText et_email;
     private EditText et_phonenumber;
+    private EditText et_tagline;
     private Button bt_login;
     boolean isUserLoggedIn;
     String errorMessage;
