@@ -10,12 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.parse.LogInCallback;
-import com.parse.ParseException;
-import com.parse.ParseUser;
-import com.parse.SignUpCallback;
 import com.yahoo.dracarys.R;
 
 public class LoginActivity extends ActionBarActivity {
@@ -34,7 +29,7 @@ public class LoginActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        ParseUser.logOut();
+//        ParseUser.logOut();
     }
 
 
@@ -51,44 +46,44 @@ public class LoginActivity extends ActionBarActivity {
 
         if (et_email.getText().toString().length() == 0 || et_phonenumber.getText().length() == 0) {
             //LOGIN
-            ParseUser.logInInBackground(et_username.getText().toString(), et_password.getText().toString(), new LogInCallback() {
-                public void done(ParseUser user, ParseException e) {
-                    if (user != null) {
-                        // Hooray! The user is logged in.
-                        callMainActivity();
-                    } else {
-                        errorMessage = e.getMessage();
-                        Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
-                        // Signup failed. Look at the ParseException to see what happened.
-                    }
-                }
-            });
+//            ParseUser.logInInBackground(et_username.getText().toString(), et_password.getText().toString(), new LogInCallback() {
+//                public void done(ParseUser user, ParseException e) {
+//                    if (user != null) {
+//                        // Hooray! The user is logged in.
+//                        callMainActivity();
+//                    } else {
+//                        errorMessage = e.getMessage();
+//                        Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
+//                        // Signup failed. Look at the ParseException to see what happened.
+//                    }
+//                }
+//            });
         } else {
 
             //SIGN-UP
             // Create the ParseUser
-            ParseUser user = new ParseUser();
-            // Set core properties
-            user.setUsername(et_username.getText().toString());
-            user.setPassword(et_password.getText().toString());
-            user.setEmail(et_email.getText().toString());
-            // Set custom properties
-            user.put("phone", Integer.parseInt(et_phonenumber.getText().toString()));
-            // Invoke signUpInBackground
-            user.signUpInBackground(new SignUpCallback() {
-                public void done(ParseException e) {
-                    if (e == null) {
-
-                        callMainActivity();
-                        // Hooray! Let them use the app now.
-                    } else {
-                        errorMessage = e.getMessage();
-                        Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
-                        // Sign up didn't succeed. Look at the ParseException
-                        // to figure out what went wrong
-                    }
-                }
-            });
+//            ParseUser user = new ParseUser();
+//            // Set core properties
+//            user.setUsername(et_username.getText().toString());
+//            user.setPassword(et_password.getText().toString());
+//            user.setEmail(et_email.getText().toString());
+//            // Set custom properties
+//            user.put("phone", Integer.parseInt(et_phonenumber.getText().toString()));
+//            // Invoke signUpInBackground
+//            user.signUpInBackground(new SignUpCallback() {
+//                public void done(ParseException e) {
+//                    if (e == null) {
+//
+//                        callMainActivity();
+//                        // Hooray! Let them use the app now.
+//                    } else {
+//                        errorMessage = e.getMessage();
+//                        Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
+//                        // Sign up didn't succeed. Look at the ParseException
+//                        // to figure out what went wrong
+//                    }
+//                }
+//            });
         }
 
     }

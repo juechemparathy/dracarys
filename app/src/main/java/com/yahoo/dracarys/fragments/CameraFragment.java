@@ -16,10 +16,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.parse.ParseException;
-import com.parse.ParseFile;
-import com.parse.ParseUser;
-import com.parse.SaveCallback;
 import com.yahoo.dracarys.R;
 
 import java.io.ByteArrayOutputStream;
@@ -31,7 +27,7 @@ public class CameraFragment extends Fragment {
 
     private Camera camera;
     private SurfaceView surfaceView;
-    private ParseFile photoFile;
+//    private ParseFile photoFile;
     private ImageButton photoButton;
 
     @Override
@@ -133,23 +129,23 @@ public class CameraFragment extends Fragment {
         byte[] scaledData = bos.toByteArray();
 
         // Save the scaled image to Parse
-        photoFile = new ParseFile("profile_photo.jpg", scaledData);
-        photoFile.saveInBackground(new SaveCallback() {
-
-            public void done(ParseException e) {
-                if (e != null) {
-                    Toast.makeText(getActivity(),
-                            "Error saving: " + e.getMessage(),
-                            Toast.LENGTH_LONG).show();
-                } else {
-                    //Add to user obj
-                    ParseUser.getCurrentUser().put("selfie",photoFile);
-                    ParseUser.getCurrentUser().saveEventually();
-                    Toast.makeText(getActivity(),"Saving picture!",Toast.LENGTH_SHORT).show();
-                    getActivity().finish();
-                }
-            }
-        });
+//        photoFile = new ParseFile("profile_photo.jpg", scaledData);
+//        photoFile.saveInBackground(new SaveCallback() {
+//
+//            public void done(ParseException e) {
+//                if (e != null) {
+//                    Toast.makeText(getActivity(),
+//                            "Error saving: " + e.getMessage(),
+//                            Toast.LENGTH_LONG).show();
+//                } else {
+//                    //Add to user obj
+//                    ParseUser.getCurrentUser().put("selfie",photoFile);
+//                    ParseUser.getCurrentUser().saveEventually();
+//                    Toast.makeText(getActivity(),"Saving picture!",Toast.LENGTH_SHORT).show();
+//                    getActivity().finish();
+//                }
+//            }
+//        });
     }
 
 

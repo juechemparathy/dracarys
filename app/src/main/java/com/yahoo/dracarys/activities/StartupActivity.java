@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.parse.ParseUser;
 import com.yahoo.dracarys.R;
 
 public class StartupActivity extends ActionBarActivity {
@@ -22,20 +21,20 @@ public class StartupActivity extends ActionBarActivity {
         //check for UserPref init page
         checkForUserPrefSettings();
 
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        if (currentUser != null) {
-            // do stuff with the user
-            Intent i = new Intent(this, MainActivity.class);
-            i.putExtra("startUpMode", "normal");
-            Log.d("DEBUG", "Starting up in normal mode");
-            startActivity(i);
-        } else {
+//        ParseUser currentUser = ParseUser.getCurrentUser();
+//        if (currentUser != null) {
+//            // do stuff with the user
+//            Intent i = new Intent(this, MainActivity.class);
+//            i.putExtra("startUpMode", "normal");
+//            Log.d("DEBUG", "Starting up in normal mode");
+//            startActivity(i);
+//        } else {
             // show the signup or login screen
             Intent i = new Intent(this, LoginActivity.class);
             i.putExtra("startUpMode", "normal");
             Log.d("DEBUG", "Starting up in normal mode");
             startActivity(i);
-        }
+//        }
     }
 
 

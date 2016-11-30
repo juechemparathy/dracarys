@@ -4,14 +4,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,12 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.toolbox.ImageLoader;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseFile;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.ParseUser;
 import com.yahoo.dracarys.R;
 import com.yahoo.dracarys.activities.CameraActivity;
 import com.yahoo.dracarys.adapters.ProfileLineItemAdapter;
@@ -98,82 +89,82 @@ public class ProfileFragment extends Fragment implements OnFragmentInteractionLi
         //Fetch data from  parse
         //1.User main  info
         //2.User timeline info
-        final ParseUser user = ParseUser.getCurrentUser();
-        tvName.setText(user.getUsername());
-        String tagLine = (String) user.get("tagline");
-        if(tagLine == null || tagLine.trim().length()==0){
-            tvTagLine.setText("Tap here to edit your tagline!");
-        }else{
-            tvTagLine.setText(tagLine);
-        }
-
-        ParseFile selfieFile  = user.getParseFile("selfie");
-        Bitmap selfie = null;
-        if(selfieFile!=null) {
-            try {
-                selfie = BitmapFactory.decodeByteArray(selfieFile.getData(), 0, selfieFile.getData().length);
-                if (selfie != null) {
-                    ivProfileImage.setImageBitmap(selfie);
-                }
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }else {
-            ivProfileImage.setImageResource(R.drawable.book_profile);
-        }
-
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Locker");
-        query.whereEqualTo("userObjId", user.getObjectId());
-        query.include("userPointer");
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> lockerList, ParseException e) {
-                if (e == null) {
-                    Log.d("LOCKER", "Retrieved " + lockerList.size() + " items");
-                    if (lockerList != null && lockerList.size() > 0) {
-                        imageUrl = lockerList.get(0).getString("smallimageurl");
-                    } else {
-
-                    }
-                }
-            }
-        });
-
-        query = ParseQuery.getQuery("Follower");
-        query.whereEqualTo("follower", ParseUser.getCurrentUser());
-        query.whereEqualTo("status", 1);
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> followerList, ParseException e) {
-                if (e == null) {
-                    tvFollowers.setText(followerList.size() + " followers ");
-                } else {
-                    Log.d("LOCKER", "Error: " + e.getMessage());
-                }
-            }
-        });
-
-        query = ParseQuery.getQuery("Follower");
-        query.whereEqualTo("following", ParseUser.getCurrentUser());
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> followingList, ParseException e) {
-                if (e == null) {
-                    tvFollowing.setText(followingList.size() + " following");
-                } else {
-                    Log.d("LOCKER", "Error: " + e.getMessage());
-                }
-            }
-        });
-
-        query = ParseQuery.getQuery("Lend");
-        query.whereEqualTo("lenderPointer", ParseUser.getCurrentUser());
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> followingList, ParseException e) {
-                if (e == null) {
-                    tvLendRequests.setText(followingList.size() + " share requests");
-                } else {
-                    Log.d("LOCKER", "Error: " + e.getMessage());
-                }
-            }
-        });
+//        final ParseUser user = ParseUser.getCurrentUser();
+//        tvName.setText(user.getUsername());
+//        String tagLine = (String) user.get("tagline");
+//        if(tagLine == null || tagLine.trim().length()==0){
+//            tvTagLine.setText("Tap here to edit your tagline!");
+//        }else{
+//            tvTagLine.setText(tagLine);
+//        }
+//
+//        ParseFile selfieFile  = user.getParseFile("selfie");
+//        Bitmap selfie = null;
+//        if(selfieFile!=null) {
+//            try {
+//                selfie = BitmapFactory.decodeByteArray(selfieFile.getData(), 0, selfieFile.getData().length);
+//                if (selfie != null) {
+//                    ivProfileImage.setImageBitmap(selfie);
+//                }
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//        }else {
+//            ivProfileImage.setImageResource(R.drawable.book_profile);
+//        }
+//
+//        ParseQuery<ParseObject> query = ParseQuery.getQuery("Locker");
+//        query.whereEqualTo("userObjId", user.getObjectId());
+//        query.include("userPointer");
+//        query.findInBackground(new FindCallback<ParseObject>() {
+//            public void done(List<ParseObject> lockerList, ParseException e) {
+//                if (e == null) {
+//                    Log.d("LOCKER", "Retrieved " + lockerList.size() + " items");
+//                    if (lockerList != null && lockerList.size() > 0) {
+//                        imageUrl = lockerList.get(0).getString("smallimageurl");
+//                    } else {
+//
+//                    }
+//                }
+//            }
+//        });
+//
+//        query = ParseQuery.getQuery("Follower");
+//        query.whereEqualTo("follower", ParseUser.getCurrentUser());
+//        query.whereEqualTo("status", 1);
+//        query.findInBackground(new FindCallback<ParseObject>() {
+//            public void done(List<ParseObject> followerList, ParseException e) {
+//                if (e == null) {
+//                    tvFollowers.setText(followerList.size() + " followers ");
+//                } else {
+//                    Log.d("LOCKER", "Error: " + e.getMessage());
+//                }
+//            }
+//        });
+//
+//        query = ParseQuery.getQuery("Follower");
+//        query.whereEqualTo("following", ParseUser.getCurrentUser());
+//        query.findInBackground(new FindCallback<ParseObject>() {
+//            public void done(List<ParseObject> followingList, ParseException e) {
+//                if (e == null) {
+//                    tvFollowing.setText(followingList.size() + " following");
+//                } else {
+//                    Log.d("LOCKER", "Error: " + e.getMessage());
+//                }
+//            }
+//        });
+//
+//        query = ParseQuery.getQuery("Lend");
+//        query.whereEqualTo("lenderPointer", ParseUser.getCurrentUser());
+//        query.findInBackground(new FindCallback<ParseObject>() {
+//            public void done(List<ParseObject> followingList, ParseException e) {
+//                if (e == null) {
+//                    tvLendRequests.setText(followingList.size() + " share requests");
+//                } else {
+//                    Log.d("LOCKER", "Error: " + e.getMessage());
+//                }
+//            }
+//        });
     }
 
     @Override
@@ -215,9 +206,9 @@ public class ProfileFragment extends Fragment implements OnFragmentInteractionLi
                         // Do something with value!
                         tvTagLine.setText(value);
                         //save tagline
-                        ParseUser user = ParseUser.getCurrentUser();
-                        user.put("tagline",value);
-                        user.saveInBackground();
+//                        ParseUser user = ParseUser.getCurrentUser();
+//                        user.put("tagline",value);
+//                        user.saveInBackground();
                         dialog.cancel();
                     }
                 });
@@ -239,33 +230,33 @@ public class ProfileFragment extends Fragment implements OnFragmentInteractionLi
 
         if (bookLineItems == null) {
             bookLineItems = new ArrayList<BookLineItem>();
-            final ParseUser user = ParseUser.getCurrentUser();
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("Locker");
-            query.whereEqualTo("displaystate", 1);
-            query.whereEqualTo("userPointer", user);
-            query.findInBackground(new FindCallback<ParseObject>() {
-                public void done(List<ParseObject> lockerList, ParseException e) {
-                    if (e == null) {
-                        Log.d("LOCKER", "Retrieved " + lockerList.size() + " items");
-                        for (ParseObject parseObject : lockerList) {
-                            BookLineItem bookLineItem = new BookLineItem();
-                            bookLineItem.setAuthor(parseObject.getString("author"));
-                            bookLineItem.setImageUrl(parseObject.getString("smallimageurl"));
-                            bookLineItem.setTitle(parseObject.getString("title"));
-                            bookLineItem.setUsername(parseObject.getParseUser("userPointer").getUsername());
-                            bookLineItem.setAge(parseObject.getString("createdAt"));
-                            bookLineItem.setEan(parseObject.getString("ean"));
-                            bookLineItem.setState(parseObject.getInt("state"));
-                            bookLineItem.setDisplaystate(parseObject.getInt("displaystate"));
-                            bookLineItem.setParseBookObject(parseObject);
-                            bookLineItems.add(bookLineItem);
-                            lineItemAdapter.notifyDataSetChanged();
-                        }
-                    } else {
-                        Log.d("LOCKER", "Error: " + e.getMessage());
-                    }
-                }
-            });
+//            final ParseUser user = ParseUser.getCurrentUser();
+//            ParseQuery<ParseObject> query = ParseQuery.getQuery("Locker");
+//            query.whereEqualTo("displaystate", 1);
+//            query.whereEqualTo("userPointer", user);
+//            query.findInBackground(new FindCallback<ParseObject>() {
+//                public void done(List<ParseObject> lockerList, ParseException e) {
+//                    if (e == null) {
+//                        Log.d("LOCKER", "Retrieved " + lockerList.size() + " items");
+//                        for (ParseObject parseObject : lockerList) {
+//                            BookLineItem bookLineItem = new BookLineItem();
+//                            bookLineItem.setAuthor(parseObject.getString("author"));
+//                            bookLineItem.setImageUrl(parseObject.getString("smallimageurl"));
+//                            bookLineItem.setTitle(parseObject.getString("title"));
+//                            bookLineItem.setUsername(parseObject.getParseUser("userPointer").getUsername());
+//                            bookLineItem.setAge(parseObject.getString("createdAt"));
+//                            bookLineItem.setEan(parseObject.getString("ean"));
+//                            bookLineItem.setState(parseObject.getInt("state"));
+//                            bookLineItem.setDisplaystate(parseObject.getInt("displaystate"));
+//                            bookLineItem.setParseBookObject(parseObject);
+//                            bookLineItems.add(bookLineItem);
+//                            lineItemAdapter.notifyDataSetChanged();
+//                        }
+//                    } else {
+//                        Log.d("LOCKER", "Error: " + e.getMessage());
+//                    }
+//                }
+//            });
         }
 
         recyclerView = (RecyclerView) layout.findViewById(R.id.usertimeline_rcview);

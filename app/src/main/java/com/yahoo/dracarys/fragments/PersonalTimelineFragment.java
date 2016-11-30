@@ -8,17 +8,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.ParseUser;
 import com.yahoo.dracarys.R;
 import com.yahoo.dracarys.adapters.LineItemAdapter;
 import com.yahoo.dracarys.interfaces.OnFragmentInteractionListener;
@@ -82,53 +76,53 @@ public class PersonalTimelineFragment extends Fragment implements OnFragmentInte
 
         if(bookLineItems==null) {
             bookLineItems = new ArrayList<BookLineItem>();
-            ParseQuery query = ParseQuery.getQuery("Follower");
-            query.whereEqualTo("following", ParseUser.getCurrentUser());
-            query.whereEqualTo("status", "A");
-            query.findInBackground(new FindCallback<ParseObject>() {
-                public void done(List<ParseObject> followerList, ParseException e) {
-                    List<ParseObject> userList = new ArrayList<ParseObject>();
-                    for (ParseObject p : followerList) {
-                        userList.add(p.getParseObject("follower"));
-                    }
-
-                    if (e == null) {
-                        ParseQuery<ParseObject> query = ParseQuery.getQuery("Locker");
-                        query.orderByDescending("updatedAt");
-                        query.setLimit(100);
-                        query.whereEqualTo("state", 1);
-                        query.whereEqualTo("displaystate", 1);
-                        query.whereContainedIn("userPointer", userList);
-                        query.include("userPointer");
-                        query.findInBackground(new FindCallback<ParseObject>() {
-                            public void done(List<ParseObject> lockerList, ParseException e) {
-                                if (e == null) {
-                                    Log.d("LOCKER", "Retrieved " + lockerList.size() + " items");
-                                    for (ParseObject parseObject : lockerList) {
-                                        BookLineItem bookLineItem = new BookLineItem();
-                                        bookLineItem.setAuthor(parseObject.getString("author"));
-                                        bookLineItem.setImageUrl(parseObject.getString("smallimageurl"));
-                                        bookLineItem.setTitle(parseObject.getString("title"));
-                                        bookLineItem.setEan(parseObject.getString("ean"));
-                                        bookLineItem.setState(parseObject.getInt("state"));
-                                        bookLineItem.setDisplaystate(parseObject.getInt("displaystate"));
-                                        bookLineItem.setUsername(parseObject.getParseUser("userPointer").getUsername());
-                                        Date date = parseObject.getCreatedAt();
-                                        bookLineItem.setAge(getAge(date));
-                                        bookLineItem.setParseBookObject(parseObject);
-                                        bookLineItems.add(bookLineItem);
-                                        lineItemAdapter.notifyDataSetChanged();
-                                    }
-                                } else {
-                                    Log.d("LOCKER", "Error: " + e.getMessage());
-                                }
-                            }
-                        });
-                    } else {
-                        Log.d("LOCKER", "Error: " + e.getMessage());
-                    }
-                }
-            });
+//            ParseQuery query = ParseQuery.getQuery("Follower");
+//            query.whereEqualTo("following", ParseUser.getCurrentUser());
+//            query.whereEqualTo("status", "A");
+//            query.findInBackground(new FindCallback<ParseObject>() {
+//                public void done(List<ParseObject> followerList, ParseException e) {
+//                    List<ParseObject> userList = new ArrayList<ParseObject>();
+//                    for (ParseObject p : followerList) {
+//                        userList.add(p.getParseObject("follower"));
+//                    }
+//
+//                    if (e == null) {
+//                        ParseQuery<ParseObject> query = ParseQuery.getQuery("Locker");
+//                        query.orderByDescending("updatedAt");
+//                        query.setLimit(100);
+//                        query.whereEqualTo("state", 1);
+//                        query.whereEqualTo("displaystate", 1);
+//                        query.whereContainedIn("userPointer", userList);
+//                        query.include("userPointer");
+//                        query.findInBackground(new FindCallback<ParseObject>() {
+//                            public void done(List<ParseObject> lockerList, ParseException e) {
+//                                if (e == null) {
+//                                    Log.d("LOCKER", "Retrieved " + lockerList.size() + " items");
+//                                    for (ParseObject parseObject : lockerList) {
+//                                        BookLineItem bookLineItem = new BookLineItem();
+//                                        bookLineItem.setAuthor(parseObject.getString("author"));
+//                                        bookLineItem.setImageUrl(parseObject.getString("smallimageurl"));
+//                                        bookLineItem.setTitle(parseObject.getString("title"));
+//                                        bookLineItem.setEan(parseObject.getString("ean"));
+//                                        bookLineItem.setState(parseObject.getInt("state"));
+//                                        bookLineItem.setDisplaystate(parseObject.getInt("displaystate"));
+//                                        bookLineItem.setUsername(parseObject.getParseUser("userPointer").getUsername());
+//                                        Date date = parseObject.getCreatedAt();
+//                                        bookLineItem.setAge(getAge(date));
+//                                        bookLineItem.setParseBookObject(parseObject);
+//                                        bookLineItems.add(bookLineItem);
+//                                        lineItemAdapter.notifyDataSetChanged();
+//                                    }
+//                                } else {
+//                                    Log.d("LOCKER", "Error: " + e.getMessage());
+//                                }
+//                            }
+//                        });
+//                    } else {
+//                        Log.d("LOCKER", "Error: " + e.getMessage());
+//                    }
+//                }
+//            });
         }
 
         recyclerView = (RecyclerView) layout.findViewById(R.id.timeline_rcview);
@@ -163,55 +157,55 @@ public class PersonalTimelineFragment extends Fragment implements OnFragmentInte
             @Override
             public void onRefresh() {
                 bookLineItems = new ArrayList<BookLineItem>();
-                ParseQuery query = ParseQuery.getQuery("Follower");
-                query.whereEqualTo("following", ParseUser.getCurrentUser());
-                query.whereEqualTo("status", "A");
-                query.findInBackground(new FindCallback<ParseObject>() {
-                    public void done(List<ParseObject> followerList, ParseException e) {
-                        List<ParseObject> userList = new ArrayList<ParseObject>();
-                        for (ParseObject p : followerList) {
-                            userList.add(p.getParseObject("follower"));
-                        }
-
-                        if (e == null) {
-                            ParseQuery<ParseObject> query = ParseQuery.getQuery("Locker");
-                            query.orderByDescending("updatedAt");
-                            query.setLimit(100);
-                            query.whereEqualTo("state", 1);
-                            query.whereEqualTo("displaystate", 1);
-                            query.whereContainedIn("userPointer", userList);
-                            query.include("userPointer");
-                            query.findInBackground(new FindCallback<ParseObject>() {
-                                public void done(List<ParseObject> lockerList, ParseException e) {
-                                    if (e == null) {
-                                        Log.d("LOCKER", "Retrieved " + lockerList.size() + " items");
-                                        for (ParseObject parseObject : lockerList) {
-                                            BookLineItem bookLineItem = new BookLineItem();
-                                            bookLineItem.setAuthor(parseObject.getString("author"));
-                                            bookLineItem.setImageUrl(parseObject.getString("smallimageurl"));
-                                            bookLineItem.setTitle(parseObject.getString("title"));
-                                            bookLineItem.setEan(parseObject.getString("ean"));
-                                            bookLineItem.setState(parseObject.getInt("state"));
-                                            bookLineItem.setDisplaystate(parseObject.getInt("displaystate"));
-                                            bookLineItem.setUsername(parseObject.getParseUser("userPointer").getUsername());
-                                            Date date = parseObject.getCreatedAt();
-                                            bookLineItem.setAge(getAge(date));
-                                            bookLineItem.setParseBookObject(parseObject);
-                                            bookLineItems.add(bookLineItem);
-                                            lineItemAdapter.notifyDataSetChanged();
-
-                                            refreshLayout.setRefreshing(false);
-                                        }
-                                    } else {
-                                        Log.d("LOCKER", "Error: " + e.getMessage());
-                                    }
-                                }
-                            });
-                        } else {
-                            Log.d("LOCKER", "Error: " + e.getMessage());
-                        }
-                    }
-                });
+//                ParseQuery query = ParseQuery.getQuery("Follower");
+//                query.whereEqualTo("following", ParseUser.getCurrentUser());
+//                query.whereEqualTo("status", "A");
+//                query.findInBackground(new FindCallback<ParseObject>() {
+//                    public void done(List<ParseObject> followerList, ParseException e) {
+//                        List<ParseObject> userList = new ArrayList<ParseObject>();
+//                        for (ParseObject p : followerList) {
+//                            userList.add(p.getParseObject("follower"));
+//                        }
+//
+//                        if (e == null) {
+//                            ParseQuery<ParseObject> query = ParseQuery.getQuery("Locker");
+//                            query.orderByDescending("updatedAt");
+//                            query.setLimit(100);
+//                            query.whereEqualTo("state", 1);
+//                            query.whereEqualTo("displaystate", 1);
+//                            query.whereContainedIn("userPointer", userList);
+//                            query.include("userPointer");
+//                            query.findInBackground(new FindCallback<ParseObject>() {
+//                                public void done(List<ParseObject> lockerList, ParseException e) {
+//                                    if (e == null) {
+//                                        Log.d("LOCKER", "Retrieved " + lockerList.size() + " items");
+//                                        for (ParseObject parseObject : lockerList) {
+//                                            BookLineItem bookLineItem = new BookLineItem();
+//                                            bookLineItem.setAuthor(parseObject.getString("author"));
+//                                            bookLineItem.setImageUrl(parseObject.getString("smallimageurl"));
+//                                            bookLineItem.setTitle(parseObject.getString("title"));
+//                                            bookLineItem.setEan(parseObject.getString("ean"));
+//                                            bookLineItem.setState(parseObject.getInt("state"));
+//                                            bookLineItem.setDisplaystate(parseObject.getInt("displaystate"));
+//                                            bookLineItem.setUsername(parseObject.getParseUser("userPointer").getUsername());
+//                                            Date date = parseObject.getCreatedAt();
+//                                            bookLineItem.setAge(getAge(date));
+//                                            bookLineItem.setParseBookObject(parseObject);
+//                                            bookLineItems.add(bookLineItem);
+//                                            lineItemAdapter.notifyDataSetChanged();
+//
+//                                            refreshLayout.setRefreshing(false);
+//                                        }
+//                                    } else {
+//                                        Log.d("LOCKER", "Error: " + e.getMessage());
+//                                    }
+//                                }
+//                            });
+//                        } else {
+//                            Log.d("LOCKER", "Error: " + e.getMessage());
+//                        }
+//                    }
+//                });
             }
         });
         refreshLayout.setColorSchemeColors(Color.BLACK, Color.GRAY);

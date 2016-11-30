@@ -2,7 +2,6 @@ package com.yahoo.dracarys.adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
-import com.parse.ParseObject;
 import com.yahoo.dracarys.R;
 import com.yahoo.dracarys.helpers.VolleySingleton;
 import com.yahoo.dracarys.models.BookLineItem;
@@ -113,47 +111,47 @@ public class ProfileLineItemAdapter extends RecyclerView.Adapter<ProfileLineItem
             username.setOnClickListener(this);
 
 
-            lend.setOnClickListener(new View.OnClickListener() {
+//            lend.setOnClickListener(new View.OnClickListener() {
+////                @Override
+////                public void onClick(View view) {
+//////                    LendActionFragment fragment = new LendActionFragment();
+//////                    fragment.setBookLineItem(data.get(getPosition()));
+//////                    FragmentManager fm = ((Activity)context).getFragmentManager();
+//////                    fragment.show(fm,"Lend Action");
+////
+////                    //Update book status - state and displaystate
+////
+////
+////                }
+//
 //                @Override
 //                public void onClick(View view) {
-////                    LendActionFragment fragment = new LendActionFragment();
-////                    fragment.setBookLineItem(data.get(getPosition()));
-////                    FragmentManager fm = ((Activity)context).getFragmentManager();
-////                    fragment.show(fm,"Lend Action");
-//
-//                    //Update book status - state and displaystate
-//
-//
+//                    final BookLineItem bookLineItem = data.get(getPosition());
+//                    final ParseObject lockerObj = bookLineItem.getParseBookObject();
+//                    builder.setTitle("Update status");
+//                    builder.setMessage(bookLineItem.getTitle());
+//                    builder.setCancelable(true)
+//                            .setPositiveButton("Private", new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int id) {
+//                                    lockerObj.put("state", 0);
+//                                    lockerObj.saveInBackground();
+//                                }
+//                            })
+//                            .setNegativeButton("Public", new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int id) {
+//                                    lockerObj.put("state", 1);
+//                                    lockerObj.saveInBackground();
+//                                }
+//                            })
+//                            .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int id) {
+//                                    dialog.cancel();
+//                                }
+//                            });
+//                    AlertDialog alert = builder.create();
+//                    alert.show();
 //                }
-
-                @Override
-                public void onClick(View view) {
-                    final BookLineItem bookLineItem = data.get(getPosition());
-                    final ParseObject lockerObj = bookLineItem.getParseBookObject();
-                    builder.setTitle("Update status");
-                    builder.setMessage(bookLineItem.getTitle());
-                    builder.setCancelable(true)
-                            .setPositiveButton("Private", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    lockerObj.put("state", 0);
-                                    lockerObj.saveInBackground();
-                                }
-                            })
-                            .setNegativeButton("Public", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    lockerObj.put("state", 1);
-                                    lockerObj.saveInBackground();
-                                }
-                            })
-                            .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
-                    AlertDialog alert = builder.create();
-                    alert.show();
-                }
-            });
+//            });
         }
 
         @Override

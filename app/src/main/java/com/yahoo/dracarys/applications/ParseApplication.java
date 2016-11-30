@@ -3,8 +3,6 @@ package com.yahoo.dracarys.applications;
 import android.app.Application;
 import android.content.Context;
 
-import com.parse.Parse;
-
 /**
  * Created by jue on 2/15/15.
  */
@@ -19,10 +17,10 @@ public class ParseApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        // Enable Local Datastore.
-        Parse.enableLocalDatastore(this);
-        // Add your initialization code here
-        Parse.initialize(this, YOUR_APPLICATION_ID, YOUR_CLIENT_KEY);
+//        // Enable Local Datastore.
+//        Parse.enableLocalDatastore(this);
+//        // Add your initialization code here
+//        Parse.initialize(this, YOUR_APPLICATION_ID, YOUR_CLIENT_KEY);
 
         instance = this;
     }

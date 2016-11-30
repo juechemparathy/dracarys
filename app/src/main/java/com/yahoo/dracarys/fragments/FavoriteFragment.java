@@ -6,17 +6,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.ParseUser;
 import com.yahoo.dracarys.R;
 import com.yahoo.dracarys.adapters.FavoriteLineItemAdapter;
 import com.yahoo.dracarys.interfaces.OnFragmentInteractionListener;
@@ -76,33 +70,33 @@ public class FavoriteFragment extends Fragment implements OnFragmentInteractionL
 
         if(bookLineItems==null) {
             bookLineItems = new ArrayList<BookLineItem>();
-            final ParseUser user = ParseUser.getCurrentUser();
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("Favorites");
-            query.include("lockerPointer");
-            query.include("userPointer");
-            query.whereEqualTo("userPointer", user);
-            query.findInBackground(new FindCallback<ParseObject>() {
-                public void done(List<ParseObject> lockerList, ParseException e) {
-                    if (e == null) {
-                        Log.d("LOCKER", "Retrieved " + lockerList.size() + " items");
-                        for (ParseObject parseObject : lockerList) {
-                            ParseObject lockerObj = parseObject.getParseObject("lockerPointer");
-                            BookLineItem bookLineItem = new BookLineItem();
-                            bookLineItem.setAuthor(lockerObj.getString("author"));
-                            bookLineItem.setImageUrl(lockerObj.getString("smallimageurl"));
-                            bookLineItem.setTitle(lockerObj.getString("title"));
-                            bookLineItem.setUsername(parseObject.getParseUser("userPointer").getUsername());
-                            bookLineItem.setAge(lockerObj.getString("createdAt"));
-                            bookLineItem.setEan(lockerObj.getString("ean"));
-                            bookLineItem.setParseBookObject(parseObject);
-                            bookLineItems.add(bookLineItem);
-                        }
-                        lineItemAdapter.notifyDataSetChanged();
-                    } else {
-                        Log.d("LOCKER", "Error: " + e.getMessage());
-                    }
-                }
-            });
+//            final ParseUser user = ParseUser.getCurrentUser();
+//            ParseQuery<ParseObject> query = ParseQuery.getQuery("Favorites");
+//            query.include("lockerPointer");
+//            query.include("userPointer");
+//            query.whereEqualTo("userPointer", user);
+//            query.findInBackground(new FindCallback<ParseObject>() {
+//                public void done(List<ParseObject> lockerList, ParseException e) {
+//                    if (e == null) {
+//                        Log.d("LOCKER", "Retrieved " + lockerList.size() + " items");
+//                        for (ParseObject parseObject : lockerList) {
+//                            ParseObject lockerObj = parseObject.getParseObject("lockerPointer");
+//                            BookLineItem bookLineItem = new BookLineItem();
+//                            bookLineItem.setAuthor(lockerObj.getString("author"));
+//                            bookLineItem.setImageUrl(lockerObj.getString("smallimageurl"));
+//                            bookLineItem.setTitle(lockerObj.getString("title"));
+//                            bookLineItem.setUsername(parseObject.getParseUser("userPointer").getUsername());
+//                            bookLineItem.setAge(lockerObj.getString("createdAt"));
+//                            bookLineItem.setEan(lockerObj.getString("ean"));
+//                            bookLineItem.setParseBookObject(parseObject);
+//                            bookLineItems.add(bookLineItem);
+//                        }
+//                        lineItemAdapter.notifyDataSetChanged();
+//                    } else {
+//                        Log.d("LOCKER", "Error: " + e.getMessage());
+//                    }
+//                }
+//            });
         }
 
         recyclerView = (RecyclerView) layout.findViewById(R.id.notification_timeline_rcview);

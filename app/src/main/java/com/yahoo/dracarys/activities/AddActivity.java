@@ -17,8 +17,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.parse.ParseObject;
-import com.parse.ParseUser;
 import com.yahoo.dracarys.R;
 import com.yahoo.dracarys.helpers.AmazonFetcher;
 import com.yahoo.dracarys.helpers.VolleySingleton;
@@ -83,23 +81,23 @@ public class AddActivity extends ActionBarActivity{
             public void onResponse(String response) {
                 Log.d("DEBUG", "Calling AmazonFetcher");
                 productResult = AmazonFetcher.parseXMLInput(response);
-                ParseObject lockerItem = new ParseObject("Locker");
-                lockerItem.put("title", productResult.get("title"));
-                lockerItem.put("ean", productResult.get("ean"));
-                lockerItem.put("state", 1);
-                lockerItem.put("displaystate", 1);
-                lockerItem.put("smallimageurl", productResult.get("smallimageurl"));
-                lockerItem.put("author", productResult.get("author"));
-                lockerItem.put("userPointer",ParseUser.getCurrentUser());
-
-
-
-                //Set the default flags
-
-                //Honor the user preferences
-
-                //Add to the locker
-                lockerItem.saveInBackground();
+//                ParseObject lockerItem = new ParseObject("Locker");
+//                lockerItem.put("title", productResult.get("title"));
+//                lockerItem.put("ean", productResult.get("ean"));
+//                lockerItem.put("state", 1);
+//                lockerItem.put("displaystate", 1);
+//                lockerItem.put("smallimageurl", productResult.get("smallimageurl"));
+//                lockerItem.put("author", productResult.get("author"));
+//                lockerItem.put("userPointer",ParseUser.getCurrentUser());
+//
+//
+//
+//                //Set the default flags
+//
+//                //Honor the user preferences
+//
+//                //Add to the locker
+//                lockerItem.saveInBackground();
             }
         }, new Response.ErrorListener() {
             @Override

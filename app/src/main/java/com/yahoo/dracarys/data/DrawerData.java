@@ -1,6 +1,5 @@
 package com.yahoo.dracarys.data;
 
-import com.parse.ParseUser;
 import com.yahoo.dracarys.R;
 import com.yahoo.dracarys.models.DrawerLineItem;
 
@@ -18,7 +17,7 @@ public class DrawerData {
             data = new ArrayList();
 
             DrawerLineItem lineItem = new DrawerLineItem();
-            lineItem.setTitle("Hi "+ ParseUser.getCurrentUser().getUsername() + "!");
+            lineItem.setTitle("Hi uSer!");
             data.add(lineItem);
 
             lineItem = new DrawerLineItem();

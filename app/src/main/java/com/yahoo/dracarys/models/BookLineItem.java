@@ -1,7 +1,5 @@
 package com.yahoo.dracarys.models;
 
-import com.parse.ParseObject;
-
 /**
  * Created by jue on 1/31/15.
  */
@@ -15,7 +13,7 @@ public class BookLineItem {
     private String age;
     private int star;
     private String ean;
-    private ParseObject parseBookObject;
+//    private ParseObject parseBookObject;
     private int state;
     private int displaystate;
 
@@ -35,13 +33,13 @@ public class BookLineItem {
         this.displaystate = displaystate;
     }
 
-    public ParseObject getParseBookObject() {
-        return parseBookObject;
-    }
-
-    public void setParseBookObject(ParseObject parseBookObject) {
-        this.parseBookObject = parseBookObject;
-    }
+//    public ParseObject getParseBookObject() {
+//        return parseBookObject;
+//    }
+//
+//    public void setParseBookObject(ParseObject parseBookObject) {
+//        this.parseBookObject = parseBookObject;
+//    }
 
     public String getEan() {
         return ean;
